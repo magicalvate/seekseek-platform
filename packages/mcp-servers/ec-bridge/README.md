@@ -24,6 +24,17 @@ cd seekseek-platform\packages\mcp-servers\ec-bridge
 > "找一下关于 AI 集成项目的会议"
 > "5 月 12 日做了哪些决策？"
 
+## 更新
+
+无需重新注册，只需拉取最新代码并重启 Claude Code：
+
+```bash
+cd seekseek-platform
+git pull
+```
+
+> 重启 Claude Code 后新版本即生效。
+
 ## 卸载（Claude Code）
 
 ```bash
