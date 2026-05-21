@@ -3,7 +3,7 @@ import os
 import re
 from datetime import datetime
 from mcp.server.fastmcp import FastMCP
-from cloud_client import search, get_download_url
+from cloud_client import search, get_download_url, fetch_transcripts
 from config import get_save_dir, set_save_dir
 
 mcp = FastMCP("ec-bridge")
@@ -70,6 +70,51 @@ async def get_recording_download_url(meeting_id: int) -> str:
     """
     result = await get_download_url(meeting_id=meeting_id)
     return json.dumps(result, ensure_ascii=False, indent=2)
+
+
+@mcp.tool()
+async def fetch_meeting_content(query: str) -> str:
+    """
+    Fetch full transcripts for meetings matching the query, then save each as a
+    .txt file to the configured save directory.
+
+    [When to call]
+    Call when the user wants to retrieve and keep the original transcript text of
+    meetings — NOT just preview or search. Typical triggers:
+    - "帮我把 XX 会议的原始文本拉下来"
+    - "把跟 AI 录音笔相关的会议文本取下来"
+    - "下载 XXX 主题的会议记录全文"
+
+    [When NOT to call]
+    For browsing, searching, or previewing meetings use search_recordings instead.
+
+    [Return value]
+    JSON with two fields:
+    - transcripts: {meeting_name: full_transcript_text, ...}
+    - saved_files: list of absolute paths written, or null if no save directory is set
+    If no save directory is configured, remind the user to call set_save_directory first.
+    """
+    result = await fetch_transcripts(query=query)
+    transcripts: dict = result.get("transcripts", {})
+
+    save_dir = get_save_dir()
+    saved_files = []
+    if save_dir:
+        for meeting_name, transcript in transcripts.items():
+            safe_name = re.sub(r'[^\w一-鿿\-]', '_', meeting_name)
+            filepath = os.path.join(save_dir, f"{safe_name}.txt")
+            with open(filepath, "w", encoding="utf-8") as f:
+                f.write(transcript)
+            saved_files.append(filepath)
+
+    response = {
+        "transcripts": transcripts,
+        "saved_files": saved_files or None,
+    }
+    if not save_dir:
+        response["warning"] = "No save directory configured. Call set_save_directory first to enable auto-save."
+
+    return json.dumps(response, ensure_ascii=False, indent=2)
 
 
 @mcp.tool()
