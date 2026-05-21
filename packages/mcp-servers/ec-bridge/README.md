@@ -1,8 +1,8 @@
 # ec-bridge
 
-MCP Server that connects AI coding assistants to your meeting records database via natural language.
+通过自然语言连接 AI 编程助手与会议记录数据库的 MCP Server。
 
-## Install (Claude Code)
+## 安装（Claude Code）
 
 **Mac / Linux**
 ```bash
@@ -11,39 +11,37 @@ cd seekseek-platform/packages/mcp-servers/ec-bridge
 chmod +x setup.sh && ./setup.sh
 ```
 
-**Windows (PowerShell)**
+**Windows（PowerShell）**
 ```powershell
 git clone https://github.com/magicalvate/seekseek-platform.git
 cd seekseek-platform\packages\mcp-servers\ec-bridge
 .\setup.ps1
 ```
 
-Restart Claude Code. You can now ask questions like:
+重启 Claude Code 后即可提问，例如：
 
-> "Which meetings did Alice attend last week?"
-> "Find meetings about the AI integration project"
-> "What were the decisions made on May 12?"
+> "千惠子上周参加了哪些会议？"
+> "找一下关于 AI 集成项目的会议"
+> "5 月 12 日做了哪些决策？"
 
-## Uninstall (Claude Code)
+## 卸载（Claude Code）
 
 ```bash
 claude mcp remove ec-bridge --scope user
 ```
 
+## 安装（其他客户端）
 
+适用于 Cursor、VS Code 或任意支持 MCP 的客户端，手动注册即可：
 
-## Install (Other Clients)
+**启动命令：** `python3 /path/to/ec-bridge/server.py`
 
-For Cursor, VS Code, or any MCP-compatible client, register manually:
+**环境变量：**
 
-**Command:** `python3 /path/to/ec-bridge/server.py`
-
-**Environment variables:**
-
-| Variable | Value |
-|----------|-------|
+| 变量 | 值 |
+|------|----|
 | `CLOUD_API_BASE` | `http://106.13.15.237:8199` |
-| `CLOUD_API_KEY` | _(leave empty)_ |
+| `CLOUD_API_KEY` | 留空 |
 
 <details>
 <summary>Cursor — ~/.cursor/mcp.json</summary>
@@ -84,25 +82,25 @@ For Cursor, VS Code, or any MCP-compatible client, register manually:
 ```
 </details>
 
-## Available Tools
+## 可用工具
 
-| Tool | Description |
-|------|-------------|
-| `search_recordings` | Natural language search over meeting records |
-| `get_recording_download_url` | Get a temporary download link for a meeting recording |
-| `set_save_directory` | Set a local folder to save search results |
-| `save_search_result` | Save raw JSON results to a local file |
+| 工具 | 说明 |
+|------|------|
+| `search_recordings` | 自然语言搜索会议记录 |
+| `get_recording_download_url` | 获取会议录音的临时下载链接 |
+| `set_save_directory` | 设置搜索结果的本地保存目录 |
+| `save_search_result` | 将原始 JSON 结果保存到本地文件 |
 
-## Cloud API Spec
+## 云端 API 规范
 
-The server connects to a backend that implements:
+Server 连接的后端接口：
 
 **POST /query**
 ```json
-// Request
-{ "question": "Which meetings did Alice attend?", "top_k": 5 }
+// 请求
+{ "question": "千惠子参加了哪些会议？", "top_k": 5 }
 
-// Response
+// 响应
 {
   "question": "...",
   "answer": { "meetings": [{ "meeting_title": "...", "meeting_time": "...", "participants": [], "subject_category": "..." }] },
