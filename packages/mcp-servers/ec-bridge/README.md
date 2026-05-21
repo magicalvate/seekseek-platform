@@ -10,7 +10,13 @@ cd seekseek-platform/packages/mcp-servers/ec-bridge
 chmod +x setup.sh && ./setup.sh
 ```
 
+> **Windows users:** run the above in Git Bash or WSL — `setup.sh` requires a bash shell.
+
 Restart Claude Code. You can now ask questions like:
+
+> "Which meetings did Alice attend last week?"
+> "Find meetings about the AI integration project"
+> "What were the decisions made on May 12?"
 
 ## Uninstall (Claude Code)
 
@@ -18,9 +24,7 @@ Restart Claude Code. You can now ask questions like:
 claude mcp remove ec-bridge --scope user
 ```
 
-> "Which meetings did Alice attend last week?"
-> "Find meetings about the AI integration project"
-> "What were the decisions made on May 12?"
+
 
 ## Install (Other Clients)
 

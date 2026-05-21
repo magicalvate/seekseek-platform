@@ -4,7 +4,8 @@ set -e
 DIR="$(cd "$(dirname "$0")" && pwd)"
 
 echo "1/2 Installing dependencies..."
-pip3 install -r "$DIR/requirements.txt" --break-system-packages -q
+pip3 install -r "$DIR/requirements.txt" --user -q 2>/dev/null || \
+pip3 install -r "$DIR/requirements.txt" -q
 
 echo "2/2 Registering ec-bridge with Claude Code (user scope)..."
 claude mcp remove ec-bridge --scope user 2>/dev/null || true
