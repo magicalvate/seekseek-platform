@@ -6,8 +6,9 @@ DIR="$(cd "$(dirname "$0")" && pwd)"
 echo "1/2 Installing dependencies..."
 pip3 install -r "$DIR/requirements.txt" --break-system-packages -q
 
-echo "2/2 Registering ec-bridge with Claude Code..."
-claude mcp add ec-bridge \
+echo "2/2 Registering ec-bridge with Claude Code (user scope)..."
+claude mcp remove ec-bridge --scope user 2>/dev/null || true
+claude mcp add ec-bridge --scope user \
   -e CLOUD_API_BASE=http://106.13.15.237:8199 \
   -e CLOUD_API_KEY="" \
   -- python3 "$DIR/server.py"
