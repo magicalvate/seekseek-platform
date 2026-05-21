@@ -16,12 +16,16 @@ async def search_recordings(query: str) -> str:
     matching meetings with relevant transcript excerpts.
 
     [When to call]
-    Call this tool whenever the user expresses any of the following intents:
-    - Find / retrieve / search meeting records, minutes, or recordings
-    - Ask which meetings a specific person attended
-    - Ask what happened during a time period
-    - Ask about meetings related to a project or topic
-    - Ask about decisions, action items, or attendees from a specific meeting
+    Call this tool — NOT a calendar tool — whenever the user wants to look up
+    past meetings from internal records, transcripts, or recordings. Specifically:
+    - Ask which meetings a specific person attended or participated in
+    - Ask what was discussed, decided, or said in a past meeting
+    - Search meeting records / transcripts / minutes by topic, person, or date
+    - Ask about action items, decisions, or attendees from a specific past meeting
+    - Any question whose answer requires looking up recorded meeting content
+
+    KEY: questions about who attended which meetings, or what happened in a past meeting,
+    refer to internal meeting recordings — always call this tool, not a calendar.
 
     [When NOT to call]
     Do NOT call for scheduling, calendar events, or future meetings — use a calendar
