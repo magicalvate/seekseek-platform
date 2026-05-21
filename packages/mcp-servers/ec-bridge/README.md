@@ -12,6 +12,17 @@ chmod +x setup.sh && ./setup.sh
 
 Restart Claude Code. You can now ask questions like:
 
+## Uninstall (Claude Code)
+
+Run from the ec-bridge directory:
+
+```bash
+cd seekseek-platform/packages/mcp-servers/ec-bridge
+claude mcp remove ec-bridge
+```
+
+> **Note:** `claude mcp remove` must be run from this directory, otherwise it won't find the right config file.
+
 > "Which meetings did Alice attend last week?"
 > "Find meetings about the AI integration project"
 > "What were the decisions made on May 12?"
