@@ -1,41 +1,43 @@
 # ec-bridge
 
-MCP Server for semantic search over meeting records. Connect any MCP-compatible AI client (Claude Code, Cursor, VS Code, etc.) to your meeting database using natural language.
+MCP Server that connects AI coding assistants to your meeting records database via natural language.
 
-## Prerequisites
-
-- Python 3.10+
-- pip3
-
-## Installation
+## Install (Claude Code)
 
 ```bash
 git clone https://github.com/magicalvate/seekseek-platform.git
 cd seekseek-platform/packages/mcp-servers/ec-bridge
-pip3 install -r requirements.txt
+chmod +x setup.sh && ./setup.sh
 ```
 
-## Client Registration
+Restart Claude Code. You can now ask questions like:
 
-### Claude Code
+> "Which meetings did Alice attend last week?"
+> "Find meetings about the AI integration project"
+> "What were the decisions made on May 12?"
 
-```bash
-claude mcp add ec-bridge \
-  -e CLOUD_API_BASE=http://106.13.15.237:8199 \
-  -e CLOUD_API_KEY="" \
-  -- python3 /absolute/path/to/ec-bridge/server.py
-```
+## Install (Other Clients)
 
-### Cursor
+For Cursor, VS Code, or any MCP-compatible client, register manually:
 
-Add to `~/.cursor/mcp.json`:
+**Command:** `python3 /path/to/ec-bridge/server.py`
+
+**Environment variables:**
+
+| Variable | Value |
+|----------|-------|
+| `CLOUD_API_BASE` | `http://106.13.15.237:8199` |
+| `CLOUD_API_KEY` | _(leave empty)_ |
+
+<details>
+<summary>Cursor — ~/.cursor/mcp.json</summary>
 
 ```json
 {
   "mcpServers": {
     "ec-bridge": {
       "command": "python3",
-      "args": ["/absolute/path/to/ec-bridge/server.py"],
+      "args": ["/path/to/ec-bridge/server.py"],
       "env": {
         "CLOUD_API_BASE": "http://106.13.15.237:8199",
         "CLOUD_API_KEY": ""
@@ -44,10 +46,10 @@ Add to `~/.cursor/mcp.json`:
   }
 }
 ```
+</details>
 
-### VS Code (GitHub Copilot)
-
-Add to `.vscode/mcp.json`:
+<details>
+<summary>VS Code — .vscode/mcp.json</summary>
 
 ```json
 {
@@ -55,7 +57,7 @@ Add to `.vscode/mcp.json`:
     "ec-bridge": {
       "type": "stdio",
       "command": "python3",
-      "args": ["/absolute/path/to/ec-bridge/server.py"],
+      "args": ["/path/to/ec-bridge/server.py"],
       "env": {
         "CLOUD_API_BASE": "http://106.13.15.237:8199",
         "CLOUD_API_KEY": ""
@@ -64,20 +66,7 @@ Add to `.vscode/mcp.json`:
   }
 }
 ```
-
-### Any MCP stdio client
-
-```bash
-CLOUD_API_BASE=http://106.13.15.237:8199 python3 server.py
-```
-
-## Environment Variables
-
-| Variable | Default | Description |
-|----------|---------|-------------|
-| `CLOUD_API_BASE` | `http://106.13.15.237:8199` | Cloud API base URL |
-| `CLOUD_API_KEY` | _(empty)_ | API authentication key |
-| `USE_MOCK` | `false` | Set to `true` to run with mock data (no API needed) |
+</details>
 
 ## Available Tools
 
@@ -85,24 +74,12 @@ CLOUD_API_BASE=http://106.13.15.237:8199 python3 server.py
 |------|-------------|
 | `search_recordings` | Natural language search over meeting records |
 | `get_recording_download_url` | Get a temporary download link for a meeting recording |
-| `set_save_directory` | Set the local directory for saving search results |
-| `save_search_result` | Save raw JSON search results to a local file |
-
-## Try Without an API (Mock Mode)
-
-```bash
-USE_MOCK=true python3 server.py
-```
-
-Verify the mock pipeline:
-
-```bash
-USE_MOCK=true python3 test_mock.py
-```
+| `set_save_directory` | Set a local folder to save search results |
+| `save_search_result` | Save raw JSON results to a local file |
 
 ## Cloud API Spec
 
-Your backend needs to implement:
+The server connects to a backend that implements:
 
 **POST /query**
 ```json
@@ -112,13 +89,12 @@ Your backend needs to implement:
 // Response
 {
   "question": "...",
-  "answer": { "meetings": [ { "meeting_title": "...", "meeting_time": "...", "participants": [], "subject_category": "..." } ] },
-  "chunks": [ { "chunk_id": 1, "meeting_id": 6, "meeting_title": "...", "meeting_time": "..." } ]
+  "answer": { "meetings": [{ "meeting_title": "...", "meeting_time": "...", "participants": [], "subject_category": "..." }] },
+  "chunks": [{ "chunk_id": 1, "meeting_id": 6, "meeting_title": "...", "meeting_time": "..." }]
 }
 ```
 
 **GET /v1/recordings/:meeting_id/download-url**
 ```json
-// Response
 { "meeting_id": 6, "download_url": "https://...", "expires_in": 900 }
 ```
