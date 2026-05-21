@@ -24,6 +24,9 @@ async def search_recordings(query: str) -> str:
     - Ask about decisions, action items, or attendees from a specific meeting
 
     [When NOT to call]
+    Do NOT call for scheduling, calendar events, or future meetings — use a calendar
+    tool (e.g. Google Calendar) for those. This tool only covers past recorded meetings
+    stored in the internal database (transcripts, minutes, decisions, attendees).
     Do not call when the user is discussing topics unrelated to meeting records
     (e.g. writing code, asking general technical questions).
 
