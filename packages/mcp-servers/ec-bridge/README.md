@@ -4,13 +4,19 @@ MCP Server that connects AI coding assistants to your meeting records database v
 
 ## Install (Claude Code)
 
+**Mac / Linux**
 ```bash
 git clone https://github.com/magicalvate/seekseek-platform.git
 cd seekseek-platform/packages/mcp-servers/ec-bridge
 chmod +x setup.sh && ./setup.sh
 ```
 
-> **Windows users:** run the above in Git Bash or WSL — `setup.sh` requires a bash shell.
+**Windows (PowerShell)**
+```powershell
+git clone https://github.com/magicalvate/seekseek-platform.git
+cd seekseek-platform\packages\mcp-servers\ec-bridge
+.\setup.ps1
+```
 
 Restart Claude Code. You can now ask questions like:
 
