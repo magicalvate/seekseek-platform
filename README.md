@@ -20,6 +20,14 @@ python3 web/server.py
 
 然后打开浏览器访问 http://localhost:7842
 
+更新时，在项目目录下执行：
+
+```bash
+git pull
+```
+
+刷新浏览器即可生效，无需重启服务。
+
 ## Structure
 
 ```
