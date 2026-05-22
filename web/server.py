@@ -69,21 +69,26 @@ class Handler(SimpleHTTPRequestHandler):
 if __name__ == "__main__":
     import socket as _socket
     import time
+    import sys
 
-    # Free the port if something is already listening on it
-    with _socket.socket(_socket.AF_INET, _socket.SOCK_STREAM) as s:
-        if s.connect_ex(("127.0.0.1", PORT)) == 0:
-            if IS_WINDOWS:
-                subprocess.run(
-                    ["PowerShell", "-Command",
-                     f'Stop-Process -Force -Id (Get-NetTCPConnection -LocalPort {PORT}).OwningProcess'],
-                    capture_output=True,
-                )
-            else:
-                subprocess.run(["fuser", "-k", f"{PORT}/tcp"], capture_output=True)
-            time.sleep(0.5)
+    try:
+        # Free the port if something is already listening on it
+        with _socket.socket(_socket.AF_INET, _socket.SOCK_STREAM) as s:
+            if s.connect_ex(("127.0.0.1", PORT)) == 0:
+                if IS_WINDOWS:
+                    subprocess.run(
+                        ["PowerShell", "-Command",
+                         f'Stop-Process -Force -Id (Get-NetTCPConnection -LocalPort {PORT}).OwningProcess'],
+                        capture_output=True,
+                    )
+                else:
+                    subprocess.run(["fuser", "-k", f"{PORT}/tcp"], capture_output=True)
+                time.sleep(0.5)
 
-    HTTPServer.allow_reuse_address = True
-    server = HTTPServer(("127.0.0.1", PORT), Handler)
-    print(f"SeekSeek running → http://localhost:{PORT}")
-    server.serve_forever()
+        HTTPServer.allow_reuse_address = True
+        server = HTTPServer(("127.0.0.1", PORT), Handler)
+        print(f"SeekSeek running → http://localhost:{PORT}")
+        server.serve_forever()
+    except Exception as e:
+        print(f"\n[ERROR] {e}", file=sys.stderr)
+        input("\nPress Enter to exit...")
