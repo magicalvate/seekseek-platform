@@ -7,3 +7,4 @@ result/
 .DS_Store
 reference/
 .claude/skills/
+claude_database/

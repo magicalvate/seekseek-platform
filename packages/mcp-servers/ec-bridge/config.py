@@ -26,7 +26,7 @@ def _save_local_config(data: dict) -> None:
 
 
 _PROJECT_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..", ".."))
-_DEFAULT_SAVE_DIR = os.path.join(_PROJECT_ROOT, "cloud_data_base")
+_DEFAULT_SAVE_DIR = os.path.join(_PROJECT_ROOT, "claude_database")
 
 
 def get_save_dir() -> str:
