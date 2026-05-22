@@ -409,32 +409,6 @@ body {
   color: #444;
 }
 
-.path-label {
-  display: block;
-  font-size: 12px;
-  font-weight: 600;
-  color: #aaa;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  margin-bottom: 8px;
-}
-
-.path-input {
-  width: 100%;
-  padding: 10px 14px;
-  font-size: 14px;
-  border: 1.5px solid #eaedf3;
-  border-radius: 8px;
-  outline: none;
-  font-family: 'SFMono-Regular', Consolas, monospace;
-  color: #333;
-  transition: border-color 0.15s;
-  margin-bottom: 20px;
-}
-
-.path-input:focus {
-  border-color: #4f8ef7;
-}
 
 .action-row {
   display: flex;

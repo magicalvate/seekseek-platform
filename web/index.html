@@ -46,18 +46,9 @@
     <div class="modal install-modal" id="install-modal">
       <button class="modal-close" id="install-modal-close">✕</button>
       <h2 class="install-modal-title" id="install-modal-title">安装 Skill</h2>
-      <p class="install-modal-desc">输入目标项目路径，skill 将安装到该项目的 <code>.claude/skills/</code> 目录下。</p>
+      <p class="install-modal-desc">skill 将安装到当前项目的 <code>.claude/skills/</code> 目录下。</p>
 
-      <label class="path-label">项目路径</label>
-      <input
-        class="path-input"
-        id="install-path-input"
-        type="text"
-        placeholder="/Users/you/your-project"
-        spellcheck="false"
-      />
-
-      <div class="action-row" id="install-action-row" style="display:none">
+      <div class="action-row">
         <button class="confirm-btn" id="install-confirm-btn">确认安装</button>
         <button class="uninstall-btn" id="uninstall-confirm-btn">卸载</button>
       </div>

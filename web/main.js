@@ -140,7 +140,7 @@ const skills = [
   },
 ];
 
-async function runAction(action, skillId, projectPath) {
+async function runAction(action, skillId) {
   const logEl = document.getElementById('install-log');
   const logText = document.getElementById('install-log-text');
   const installBtn = document.getElementById('install-confirm-btn');
@@ -156,7 +156,7 @@ async function runAction(action, skillId, projectPath) {
     const resp = await fetch(`/api/${action}`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ skill_id: skillId, project_path: projectPath }),
+      body: JSON.stringify({ skill_id: skillId }),
     });
     const data = await resp.json();
     logText.className = 'install-log-text ' + (data.success ? 'log-success' : 'log-error');
@@ -266,21 +266,11 @@ function openModal(item) {
   document.getElementById('modal-overlay').classList.add('open');
 }
 
-const STORAGE_KEY = 'seekseek_project_path';
-
 function openInstallModal(item) {
   currentInstallItem = item;
   document.getElementById('install-modal-title').textContent = `安装 ${item.name}`;
-
-  const saved = localStorage.getItem(STORAGE_KEY) || '';
-  const input = document.getElementById('install-path-input');
-  input.value = saved;
-
-  document.getElementById('install-action-row').style.display = saved ? 'flex' : 'none';
   document.getElementById('install-log').style.display = 'none';
-
   document.getElementById('install-modal-overlay').classList.add('open');
-  setTimeout(() => input.focus(), 100);
 }
 
 function closeModal() {
@@ -304,21 +294,12 @@ document.getElementById('install-modal-overlay').addEventListener('click', (e) =
   if (e.target === e.currentTarget) closeInstallModal();
 });
 
-document.getElementById('install-path-input').addEventListener('input', (e) => {
-  const path = e.target.value.trim();
-  document.getElementById('install-action-row').style.display = path ? 'flex' : 'none';
-  document.getElementById('install-log').style.display = 'none';
-  if (path) localStorage.setItem(STORAGE_KEY, path);
-});
-
 document.getElementById('install-confirm-btn').addEventListener('click', () => {
-  const path = document.getElementById('install-path-input').value.trim();
-  if (path && currentInstallItem) runAction('install', currentInstallItem.id, path);
+  if (currentInstallItem) runAction('install', currentInstallItem.id);
 });
 
 document.getElementById('uninstall-confirm-btn').addEventListener('click', () => {
-  const path = document.getElementById('install-path-input').value.trim();
-  if (path && currentInstallItem) runAction('uninstall', currentInstallItem.id, path);
+  if (currentInstallItem) runAction('uninstall', currentInstallItem.id);
 });
 
 document.addEventListener('keydown', (e) => {

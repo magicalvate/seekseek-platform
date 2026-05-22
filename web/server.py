@@ -24,12 +24,13 @@ class Handler(SimpleHTTPRequestHandler):
 
         length = int(self.headers.get("Content-Length", 0))
         body = json.loads(self.rfile.read(length))
-        project_path = body.get("project_path", "").strip().rstrip("/\\")
         skill_id = body.get("skill_id", "").strip()
 
-        if not project_path or not skill_id:
-            self._json(400, {"success": False, "output": "缺少 project_path 或 skill_id"})
+        if not skill_id:
+            self._json(400, {"success": False, "output": "缺少 skill_id"})
             return
+
+        project_path = str(REPO_ROOT)
 
         if self.path == "/api/install":
             if IS_WINDOWS:
