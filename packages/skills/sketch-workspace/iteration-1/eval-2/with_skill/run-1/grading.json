@@ -1,0 +1,37 @@
+{
+  "eval_id": 2,
+  "run": "with_skill",
+  "summary": {
+    "pass_rate": 1.0,
+    "passed": 5,
+    "failed": 0,
+    "total": 5
+  },
+  "expectations": [
+    {
+      "text": "Original first entry (about token refresh) is still present in ideas.md",
+      "passed": true,
+      "evidence": "ideas.md still contains '到期前 5 分钟应该静默刷新' from the pre-existing first entry"
+    },
+    {
+      "text": "New Redis caching idea was appended — should contain 'Redis' and '水平扩展'",
+      "passed": true,
+      "evidence": "ideas.md contains '考虑把现在内存里的 session 缓存换成 Redis，这样水平扩展多实例时不会有状态同步问题'"
+    },
+    {
+      "text": "There are exactly 2 '##' section headings in ideas.md (two entries)",
+      "passed": true,
+      "evidence": "ideas.md has exactly 2 '## ' headings"
+    },
+    {
+      "text": "Both entries use consistent format with **Context**: line",
+      "passed": true,
+      "evidence": "Both entries have '**Context**:' line followed by a path"
+    },
+    {
+      "text": "Response to user is brief (under 30 words)",
+      "passed": true,
+      "evidence": "Response is: '✓ 已记录到 `sketch/ideas.md`' — single line"
+    }
+  ]
+}

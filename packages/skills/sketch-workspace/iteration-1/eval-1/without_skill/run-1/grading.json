@@ -1,0 +1,37 @@
+{
+  "eval_id": 1,
+  "run": "without_skill",
+  "summary": {
+    "pass_rate": 0.0,
+    "passed": 0,
+    "failed": 5,
+    "total": 5
+  },
+  "expectations": [
+    {
+      "text": "sketch/ directory was created in the working directory",
+      "passed": false,
+      "evidence": "Created 'note-db-connection-pool.md' in output root, not in a sketch/ subdirectory"
+    },
+    {
+      "text": "sketch/ideas.md file was created",
+      "passed": false,
+      "evidence": "Created 'note-db-connection-pool.md' instead of 'sketch/ideas.md'"
+    },
+    {
+      "text": "The idea content appears verbatim — should contain '数据库连接池'",
+      "passed": false,
+      "evidence": "Original idea rewritten as prescriptive guide with 'DB_POOL_SIZE' variable and Python example"
+    },
+    {
+      "text": "Informal trigger recognized and idea was written to a file",
+      "passed": false,
+      "evidence": "File created but wrong location/structure — no sketch/ directory, no ideas.md"
+    },
+    {
+      "text": "Response to user is brief (under 30 words)",
+      "passed": false,
+      "evidence": "Response includes code snippet, numbered follow-up steps, and suggestions"
+    }
+  ]
+}

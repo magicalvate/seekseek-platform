@@ -1,0 +1,37 @@
+{
+  "eval_id": 0,
+  "run": "without_skill",
+  "expectations": [
+    {
+      "text": "sketch/ directory was created in the working directory",
+      "passed": true,
+      "evidence": "outputs/sketch/ directory exists (but contains wrong file: login-token-refresh-fix.md)"
+    },
+    {
+      "text": "sketch/ideas.md file was created",
+      "passed": false,
+      "evidence": "Created 'sketch/login-token-refresh-fix.md' instead of 'sketch/ideas.md'"
+    },
+    {
+      "text": "The idea content appears verbatim — should contain '静默刷新'",
+      "passed": false,
+      "evidence": "Content was paraphrased and turned into a full TypeScript implementation guide, not a verbatim capture"
+    },
+    {
+      "text": "ideas.md contains a timestamp in YYYY-MM-DD HH:MM format",
+      "passed": false,
+      "evidence": "Wrong file was created; ideas.md does not exist"
+    },
+    {
+      "text": "ideas.md contains a **Context**: line with a path",
+      "passed": false,
+      "evidence": "Wrong file was created; ideas.md does not exist"
+    },
+    {
+      "text": "Response to user is brief (under 30 words)",
+      "passed": false,
+      "evidence": "Response is a multi-paragraph technical write-up with TypeScript code blocks, far exceeding 30 words"
+    }
+  ],
+  "pass_rate": 0.167
+}

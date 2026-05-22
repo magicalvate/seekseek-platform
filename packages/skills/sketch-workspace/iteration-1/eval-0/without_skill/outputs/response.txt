@@ -1,0 +1,48 @@
+这是一个经典的"到期后刷新"vs"到期前刷新"的问题。我梳理了根因和修复方案，已输出到 sketch/login-token-refresh-fix.md。
+
+**根因**
+
+当前逻辑依赖响应拦截器捕获 401 才触发刷新，所以必然是"到期后"才处理。这期间用户的请求要么直接失败，要么挂起等待。
+
+**修复核心：在请求拦截器里做到期前检测**
+
+```typescript
+const REFRESH_THRESHOLD_MS = 5 * 60 * 1000; // 5分钟
+
+axiosInstance.interceptors.request.use(async (config) => {
+  const token = getAccessToken();
+  if (token && isTokenExpiringSoon(token)) {
+    await refreshTokenIfNeeded(); // 静默刷新
+  }
+  config.headers.Authorization = `Bearer ${getAccessToken()}`;
+  return config;
+});
+```
+
+`isTokenExpiringSoon` 解析 JWT 的 `exp` 字段，判断剩余时间是否 < 5 分钟。
+
+**防并发重复刷新**
+
+多个请求同时发出时只刷新一次，后续请求等待同一个 Promise：
+
+```typescript
+let refreshPromise: Promise<void> | null = null;
+
+async function refreshTokenIfNeeded() {
+  if (refreshPromise) return refreshPromise;
+  refreshPromise = doRefreshToken().finally(() => { refreshPromise = null; });
+  return refreshPromise;
+}
+```
+
+**保留 401 兜底**
+
+网络延迟等极端情况下 token 仍可能在途中过期，响应拦截器保留但加 `_isRetry` 标记防止死循环。
+
+**需要你确认的几个点：**
+
+1. refresh token 接口的 path 和入参格式？
+2. refresh token 自身的有效期？需要处理它也过期的场景吗？
+3. access token 当前存在哪里（localStorage / cookie / 内存）？
+
+确认后可以直接给出完整的代码实现。

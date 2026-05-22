@@ -1,0 +1,32 @@
+{
+  "eval_id": 1,
+  "run": "without_skill",
+  "expectations": [
+    {
+      "text": "sketch/ directory was created in the working directory",
+      "passed": false,
+      "evidence": "Created 'note-db-connection-pool.md' in the output root, not in a sketch/ subdirectory"
+    },
+    {
+      "text": "sketch/ideas.md file was created",
+      "passed": false,
+      "evidence": "Created 'note-db-connection-pool.md' instead of 'sketch/ideas.md'"
+    },
+    {
+      "text": "The idea content appears verbatim — should contain '数据库连接池'",
+      "passed": false,
+      "evidence": "Content was rewritten: original '从环境变量配置' became a prescriptive 'DB_POOL_SIZE' variable name with Python example code"
+    },
+    {
+      "text": "Informal trigger recognized and idea was written to a file (not just replied in text)",
+      "passed": false,
+      "evidence": "A file was created but in wrong location with wrong structure — no sketch/ directory, no ideas.md"
+    },
+    {
+      "text": "Response to user is brief (under 30 words)",
+      "passed": false,
+      "evidence": "Response includes code snippet, numbered follow-up steps, and suggestions — well over 30 words"
+    }
+  ],
+  "pass_rate": 0.0
+}

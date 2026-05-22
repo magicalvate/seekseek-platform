@@ -1,0 +1,27 @@
+{
+  "eval_id": 2,
+  "eval_name": "append-second-idea",
+  "prompt": "/sketch 考虑把现在内存里的 session 缓存换成 Redis，这样水平扩展多实例时不会有状态同步问题",
+  "assertions": [
+    {
+      "text": "Original first entry (about token refresh) is still present in ideas.md",
+      "check": "file_contains: sketch/ideas.md, 静默刷新"
+    },
+    {
+      "text": "New Redis caching idea was appended — should contain 'Redis' and '水平扩展'",
+      "check": "file_contains: sketch/ideas.md, Redis"
+    },
+    {
+      "text": "There are exactly 2 '##' section headings in ideas.md (two entries)",
+      "check": "line_count_with_pattern: sketch/ideas.md, ^## , equals=2"
+    },
+    {
+      "text": "Both entries use consistent format with **Context**: line",
+      "check": "pattern_count: sketch/ideas.md, **Context**:, min=2"
+    },
+    {
+      "text": "Response to user is brief (under 30 words)",
+      "check": "word_count: response.txt, max=30"
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "eval_id": 1,
+  "eval_name": "informal-trigger-no-prefix",
+  "prompt": "记一下，数据库连接池大小现在硬编码是 10，应该改成可以从环境变量配置",
+  "assertions": [
+    {
+      "text": "sketch/ directory was created in the working directory",
+      "check": "directory_exists: sketch/"
+    },
+    {
+      "text": "sketch/ideas.md file was created",
+      "check": "file_exists: sketch/ideas.md"
+    },
+    {
+      "text": "The idea content appears verbatim — should contain '数据库连接池' and '环境变量'",
+      "check": "file_contains: sketch/ideas.md, 数据库连接池"
+    },
+    {
+      "text": "Informal trigger recognized and idea was written to a file (not just replied in text)",
+      "check": "file_exists: sketch/ideas.md"
+    },
+    {
+      "text": "Response to user is brief (under 30 words)",
+      "check": "word_count: response.txt, max=30"
+    }
+  ]
+}

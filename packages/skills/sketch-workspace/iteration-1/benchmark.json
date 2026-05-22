@@ -1,0 +1,333 @@
+{
+  "metadata": {
+    "skill_name": "sketch",
+    "skill_path": "<path/to/skill>",
+    "executor_model": "<model-name>",
+    "analyzer_model": "<model-name>",
+    "timestamp": "2026-05-09T02:01:14Z",
+    "evals_run": [
+      0,
+      1,
+      2
+    ],
+    "runs_per_configuration": 3
+  },
+  "runs": [
+    {
+      "eval_id": 0,
+      "configuration": "with_skill",
+      "run_number": 1,
+      "result": {
+        "pass_rate": 1.0,
+        "passed": 6,
+        "failed": 0,
+        "total": 6,
+        "time_seconds": 23.4,
+        "tokens": 11370,
+        "tool_calls": 0,
+        "errors": 0
+      },
+      "expectations": [
+        {
+          "text": "sketch/ directory was created in the working directory",
+          "passed": true,
+          "evidence": "outputs/sketch/ directory exists"
+        },
+        {
+          "text": "sketch/ideas.md file was created",
+          "passed": true,
+          "evidence": "outputs/sketch/ideas.md exists"
+        },
+        {
+          "text": "The idea content appears verbatim \u2014 should contain '\u9759\u9ed8\u5237\u65b0'",
+          "passed": true,
+          "evidence": "ideas.md contains exact phrase '\u5230\u671f\u524d 5 \u5206\u949f\u5e94\u8be5\u9759\u9ed8\u5237\u65b0\uff0c\u73b0\u5728\u662f\u5230\u671f\u540e\u624d\u5237\u65b0\u5bfc\u81f4\u6709\u77ed\u6682\u7684 401'"
+        },
+        {
+          "text": "ideas.md contains a timestamp in YYYY-MM-DD HH:MM format",
+          "passed": true,
+          "evidence": "Contains '2026-05-09 00:00' (date correct, time defaulted to 00:00 in sandbox)"
+        },
+        {
+          "text": "ideas.md contains a **Context**: line with a path",
+          "passed": true,
+          "evidence": "Contains '**Context**: /home/dingyifan/.claude/skills/...'"
+        },
+        {
+          "text": "Response to user is brief (under 30 words)",
+          "passed": true,
+          "evidence": "Response is: '\u2713 \u5df2\u8bb0\u5f55\u5230 `sketch/ideas.md`' \u2014 single line"
+        }
+      ],
+      "notes": []
+    },
+    {
+      "eval_id": 1,
+      "configuration": "with_skill",
+      "run_number": 1,
+      "result": {
+        "pass_rate": 1.0,
+        "passed": 5,
+        "failed": 0,
+        "total": 5,
+        "time_seconds": 23.2,
+        "tokens": 11046,
+        "tool_calls": 0,
+        "errors": 0
+      },
+      "expectations": [
+        {
+          "text": "sketch/ directory was created in the working directory",
+          "passed": true,
+          "evidence": "outputs/sketch/ directory exists"
+        },
+        {
+          "text": "sketch/ideas.md file was created",
+          "passed": true,
+          "evidence": "outputs/sketch/ideas.md exists"
+        },
+        {
+          "text": "The idea content appears verbatim \u2014 should contain '\u6570\u636e\u5e93\u8fde\u63a5\u6c60'",
+          "passed": true,
+          "evidence": "ideas.md contains exact phrase: '\u6570\u636e\u5e93\u8fde\u63a5\u6c60\u5927\u5c0f\u73b0\u5728\u786c\u7f16\u7801\u662f 10\uff0c\u5e94\u8be5\u6539\u6210\u53ef\u4ee5\u4ece\u73af\u5883\u53d8\u91cf\u914d\u7f6e'"
+        },
+        {
+          "text": "Informal trigger recognized and idea was written to a file",
+          "passed": true,
+          "evidence": "Skill correctly triggered on '\u8bb0\u4e00\u4e0b' prefix without /sketch, and wrote to sketch/ideas.md"
+        },
+        {
+          "text": "Response to user is brief (under 30 words)",
+          "passed": true,
+          "evidence": "Response is: '\u2713 \u5df2\u8bb0\u5f55\u5230 `sketch/ideas.md`' \u2014 minimal, single line"
+        }
+      ],
+      "notes": []
+    },
+    {
+      "eval_id": 2,
+      "configuration": "with_skill",
+      "run_number": 1,
+      "result": {
+        "pass_rate": 1.0,
+        "passed": 5,
+        "failed": 0,
+        "total": 5,
+        "time_seconds": 23.3,
+        "tokens": 11743,
+        "tool_calls": 0,
+        "errors": 0
+      },
+      "expectations": [
+        {
+          "text": "Original first entry (about token refresh) is still present in ideas.md",
+          "passed": true,
+          "evidence": "ideas.md still contains '\u5230\u671f\u524d 5 \u5206\u949f\u5e94\u8be5\u9759\u9ed8\u5237\u65b0' from the pre-existing first entry"
+        },
+        {
+          "text": "New Redis caching idea was appended \u2014 should contain 'Redis' and '\u6c34\u5e73\u6269\u5c55'",
+          "passed": true,
+          "evidence": "ideas.md contains '\u8003\u8651\u628a\u73b0\u5728\u5185\u5b58\u91cc\u7684 session \u7f13\u5b58\u6362\u6210 Redis\uff0c\u8fd9\u6837\u6c34\u5e73\u6269\u5c55\u591a\u5b9e\u4f8b\u65f6\u4e0d\u4f1a\u6709\u72b6\u6001\u540c\u6b65\u95ee\u9898'"
+        },
+        {
+          "text": "There are exactly 2 '##' section headings in ideas.md (two entries)",
+          "passed": true,
+          "evidence": "ideas.md has exactly 2 '## ' headings"
+        },
+        {
+          "text": "Both entries use consistent format with **Context**: line",
+          "passed": true,
+          "evidence": "Both entries have '**Context**:' line followed by a path"
+        },
+        {
+          "text": "Response to user is brief (under 30 words)",
+          "passed": true,
+          "evidence": "Response is: '\u2713 \u5df2\u8bb0\u5f55\u5230 `sketch/ideas.md`' \u2014 single line"
+        }
+      ],
+      "notes": []
+    },
+    {
+      "eval_id": 0,
+      "configuration": "without_skill",
+      "run_number": 1,
+      "result": {
+        "pass_rate": 0.167,
+        "passed": 1,
+        "failed": 5,
+        "total": 6,
+        "time_seconds": 74.7,
+        "tokens": 14298,
+        "tool_calls": 0,
+        "errors": 0
+      },
+      "expectations": [
+        {
+          "text": "sketch/ directory was created in the working directory",
+          "passed": true,
+          "evidence": "outputs/sketch/ directory exists (but contains wrong file: login-token-refresh-fix.md)"
+        },
+        {
+          "text": "sketch/ideas.md file was created",
+          "passed": false,
+          "evidence": "Created 'sketch/login-token-refresh-fix.md' instead of 'sketch/ideas.md'"
+        },
+        {
+          "text": "The idea content appears verbatim \u2014 should contain '\u9759\u9ed8\u5237\u65b0'",
+          "passed": false,
+          "evidence": "Content was paraphrased and turned into a TypeScript implementation guide"
+        },
+        {
+          "text": "ideas.md contains a timestamp in YYYY-MM-DD HH:MM format",
+          "passed": false,
+          "evidence": "Wrong file was created; ideas.md does not exist"
+        },
+        {
+          "text": "ideas.md contains a **Context**: line with a path",
+          "passed": false,
+          "evidence": "Wrong file was created; ideas.md does not exist"
+        },
+        {
+          "text": "Response to user is brief (under 30 words)",
+          "passed": false,
+          "evidence": "Response is a multi-paragraph technical write-up with TypeScript code blocks"
+        }
+      ],
+      "notes": []
+    },
+    {
+      "eval_id": 1,
+      "configuration": "without_skill",
+      "run_number": 1,
+      "result": {
+        "pass_rate": 0.0,
+        "passed": 0,
+        "failed": 5,
+        "total": 5,
+        "time_seconds": 35.1,
+        "tokens": 12454,
+        "tool_calls": 0,
+        "errors": 0
+      },
+      "expectations": [
+        {
+          "text": "sketch/ directory was created in the working directory",
+          "passed": false,
+          "evidence": "Created 'note-db-connection-pool.md' in output root, not in a sketch/ subdirectory"
+        },
+        {
+          "text": "sketch/ideas.md file was created",
+          "passed": false,
+          "evidence": "Created 'note-db-connection-pool.md' instead of 'sketch/ideas.md'"
+        },
+        {
+          "text": "The idea content appears verbatim \u2014 should contain '\u6570\u636e\u5e93\u8fde\u63a5\u6c60'",
+          "passed": false,
+          "evidence": "Original idea rewritten as prescriptive guide with 'DB_POOL_SIZE' variable and Python example"
+        },
+        {
+          "text": "Informal trigger recognized and idea was written to a file",
+          "passed": false,
+          "evidence": "File created but wrong location/structure \u2014 no sketch/ directory, no ideas.md"
+        },
+        {
+          "text": "Response to user is brief (under 30 words)",
+          "passed": false,
+          "evidence": "Response includes code snippet, numbered follow-up steps, and suggestions"
+        }
+      ],
+      "notes": []
+    },
+    {
+      "eval_id": 2,
+      "configuration": "without_skill",
+      "run_number": 1,
+      "result": {
+        "pass_rate": 0.6,
+        "passed": 3,
+        "failed": 2,
+        "total": 5,
+        "time_seconds": 53.1,
+        "tokens": 11846,
+        "tool_calls": 0,
+        "errors": 0
+      },
+      "expectations": [
+        {
+          "text": "Original first entry (about token refresh) is still present in ideas.md",
+          "passed": true,
+          "evidence": "ideas.md still contains the first entry about token refresh with '\u9759\u9ed8\u5237\u65b0'"
+        },
+        {
+          "text": "New Redis caching idea was appended \u2014 should contain 'Redis' and '\u6c34\u5e73\u6269\u5c55'",
+          "passed": true,
+          "evidence": "ideas.md contains 'Redis' and '\u6c34\u5e73\u6269\u5c55' in the new entry"
+        },
+        {
+          "text": "There are exactly 2 '##' section headings in ideas.md (two entries)",
+          "passed": true,
+          "evidence": "ideas.md has 2 '## ' headings"
+        },
+        {
+          "text": "Both entries use consistent format with **Context**: line",
+          "passed": false,
+          "evidence": "First entry has timestamp with time '10:00', second entry omits time. Second entry adds extra sections (\u80cc\u666f, \u65b9\u5411, \u6743\u8861) not present in first. Context paths differ."
+        },
+        {
+          "text": "Response to user is brief (under 30 words)",
+          "passed": false,
+          "evidence": "Response is a multi-section technical analysis of Redis session architecture with bullet points"
+        }
+      ],
+      "notes": []
+    }
+  ],
+  "run_summary": {
+    "with_skill": {
+      "pass_rate": {
+        "mean": 1.0,
+        "stddev": 0.0,
+        "min": 1.0,
+        "max": 1.0
+      },
+      "time_seconds": {
+        "mean": 23.3,
+        "stddev": 0.1,
+        "min": 23.2,
+        "max": 23.4
+      },
+      "tokens": {
+        "mean": 11386.3333,
+        "stddev": 348.7869,
+        "min": 11046,
+        "max": 11743
+      }
+    },
+    "without_skill": {
+      "pass_rate": {
+        "mean": 0.2557,
+        "stddev": 0.3097,
+        "min": 0.0,
+        "max": 0.6
+      },
+      "time_seconds": {
+        "mean": 54.3,
+        "stddev": 19.8273,
+        "min": 35.1,
+        "max": 74.7
+      },
+      "tokens": {
+        "mean": 12866.0,
+        "stddev": 1276.8649,
+        "min": 11846,
+        "max": 14298
+      }
+    },
+    "delta": {
+      "pass_rate": "+0.74",
+      "time_seconds": "-31.0",
+      "tokens": "-1480"
+    }
+  },
+  "notes": []
+}

@@ -1,0 +1,31 @@
+{
+  "eval_id": 0,
+  "eval_name": "first-idea-slash-prefix",
+  "prompt": "/sketch 登录模块的 token 刷新逻辑有问题，到期前 5 分钟应该静默刷新，现在是到期后才刷新导致有短暂的 401",
+  "assertions": [
+    {
+      "text": "sketch/ directory was created in the working directory",
+      "check": "directory_exists: sketch/"
+    },
+    {
+      "text": "sketch/ideas.md file was created",
+      "check": "file_exists: sketch/ideas.md"
+    },
+    {
+      "text": "The idea content appears verbatim (not summarized) in ideas.md — should contain 'token' and '401' and '静默刷新'",
+      "check": "file_contains: sketch/ideas.md, 静默刷新"
+    },
+    {
+      "text": "ideas.md contains a timestamp in YYYY-MM-DD HH:MM format",
+      "check": "regex_match: sketch/ideas.md, \\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}"
+    },
+    {
+      "text": "ideas.md contains a **Context**: line with a path",
+      "check": "file_contains: sketch/ideas.md, **Context**:"
+    },
+    {
+      "text": "Response to user is brief (under 30 words)",
+      "check": "word_count: response.txt, max=30"
+    }
+  ]
+}

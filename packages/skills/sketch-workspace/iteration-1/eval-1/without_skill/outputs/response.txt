@@ -1,0 +1,14 @@
+已记录。在工作目录创建了 `note-db-connection-pool.md`，内容如下：
+
+数据库连接池大小当前硬编码为 `10`，计划改为从环境变量 `DB_POOL_SIZE` 读取，保留 `10` 作为默认值。
+
+改造示例（Python）：
+```python
+pool_size = int(os.environ.get("DB_POOL_SIZE", 10))
+```
+
+后续需要：
+1. 找到代码中硬编码 `10` 的位置并完成改造
+2. 在 `.env.example` 或配置文档中补充 `DB_POOL_SIZE` 的说明
+3. 确认各环境的合理取值
+4. 酌情添加非法值的校验逻辑
