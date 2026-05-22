@@ -11,8 +11,8 @@ if ($LASTEXITCODE -ne 0) {
 }
 
 Write-Host "2/2 Registering ec-bridge with Claude Code (user scope)..."
-& claude mcp remove ec-bridge --scope user 2>$null
-& claude mcp add ec-bridge --scope user `
+& claude mcp remove ec-bridge --scope project 2>$null
+& claude mcp add ec-bridge --scope project `
     -e CLOUD_API_BASE=http://106.13.15.237:8199 `
     '--' python "$DIR\server.py"
 

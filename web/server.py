@@ -9,6 +9,7 @@ from pathlib import Path
 PORT = 7842
 REPO_ROOT = Path(__file__).resolve().parent.parent
 SKILLS_DIR = REPO_ROOT / "packages" / "skills"
+MCP_SERVERS_DIR = REPO_ROOT / "packages" / "mcp-servers"
 WEB_DIR = Path(__file__).resolve().parent
 IS_WINDOWS = platform.system() == "Windows"
 
@@ -18,36 +19,46 @@ class Handler(SimpleHTTPRequestHandler):
         super().__init__(*args, directory=str(WEB_DIR), **kwargs)
 
     def do_POST(self):
-        if self.path not in ("/api/install", "/api/uninstall"):
+        if self.path not in ("/api/install", "/api/uninstall", "/api/mcp-install"):
             self.send_error(404)
             return
 
         length = int(self.headers.get("Content-Length", 0))
         body = json.loads(self.rfile.read(length))
-        skill_id = body.get("skill_id", "").strip()
 
-        if not skill_id:
-            self._json(400, {"success": False, "output": "缺少 skill_id"})
-            return
-
-        project_path = str(REPO_ROOT)
-
-        if self.path == "/api/install":
+        if self.path == "/api/mcp-install":
+            mcp_id = body.get("mcp_id", "").strip()
+            if not mcp_id:
+                self._json(400, {"success": False, "output": "缺少 mcp_id"})
+                return
+            mcp_dir = MCP_SERVERS_DIR / mcp_id
             if IS_WINDOWS:
-                ps1 = str(SKILLS_DIR / "install.ps1").replace("/", "\\")
-                cmd = ["PowerShell", "-File", ps1, project_path.replace("/", "\\"), skill_id]
+                script = str(mcp_dir / "setup.ps1").replace("/", "\\")
+                cmd = ["PowerShell", "-File", script]
             else:
-                cmd = ["bash", str(SKILLS_DIR / "install.sh"), project_path, skill_id]
+                cmd = ["bash", str(mcp_dir / "setup.sh")]
         else:
-            target = os.path.join(project_path, ".claude", "skills", skill_id)
-            if IS_WINDOWS:
-                cmd = ["PowerShell", "-Command",
-                       f'Remove-Item -Recurse -Force "{target.replace("/", chr(92))}"']
+            skill_id = body.get("skill_id", "").strip()
+            if not skill_id:
+                self._json(400, {"success": False, "output": "缺少 skill_id"})
+                return
+            project_path = str(REPO_ROOT)
+            if self.path == "/api/install":
+                if IS_WINDOWS:
+                    ps1 = str(SKILLS_DIR / "install.ps1").replace("/", "\\")
+                    cmd = ["PowerShell", "-File", ps1, project_path.replace("/", "\\"), skill_id]
+                else:
+                    cmd = ["bash", str(SKILLS_DIR / "install.sh"), project_path, skill_id]
             else:
-                cmd = ["rm", "-rf", target]
+                target = os.path.join(project_path, ".claude", "skills", skill_id)
+                if IS_WINDOWS:
+                    cmd = ["PowerShell", "-Command",
+                           f'Remove-Item -Recurse -Force "{target.replace("/", chr(92))}"']
+                else:
+                    cmd = ["rm", "-rf", target]
 
         try:
-            result = subprocess.run(cmd, capture_output=True, text=True, timeout=30)
+            result = subprocess.run(cmd, capture_output=True, text=True, timeout=60, cwd=str(REPO_ROOT))
             success = result.returncode == 0
             output = (result.stdout + result.stderr).strip()
             self._json(200, {"success": success, "output": output or ("完成" if success else "执行失败")})

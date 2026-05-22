@@ -20,46 +20,7 @@ const mcpServers = [
       '把今天会议的逐字稿保存到本地',
     ],
   },
-  {
-    id: 'wps-bridge',
-    type: 'mcp',
-    icon: '📝',
-    name: 'WPS Bridge',
-    description: '将本地文件推送到 WPS 云端，支持在线新建、浏览和打开文档进行协作编辑。',
-    author: 'seekseek',
-    tags: ['wps-bridge'],
-    tools: [
-      'push_file_to_wps',
-      'create_wps_doc',
-      'list_wps_files',
-      'get_wps_edit_link',
-    ],
-    examples: [
-      '把这个方案文件推送到 WPS 让我编辑',
-      '在 WPS 上新建一个表格',
-      '找一下我 WPS 里面的需求文档',
-    ],
-  },
-  {
-    id: 'feishu-bridge',
-    type: 'mcp',
-    icon: '🐦',
-    name: '飞书 Bridge',
-    description: '通过飞书向联系人发送待办事项，支持搜索联系人、创建任务和查看任务列表。',
-    author: 'seekseek',
-    tags: ['feishu-bridge'],
-    tools: [
-      'search_feishu_contacts',
-      'send_todo',
-      'list_my_todos',
-      'get_contact_info',
-    ],
-    examples: [
-      '给张三发一个待办：明天下午提交方案',
-      '提醒 Alice 周五前完成报告',
-      '查一下我有哪些未完成的待办',
-    ],
-  },
+
 ];
 
 const skills = [
@@ -140,7 +101,7 @@ const skills = [
   },
 ];
 
-async function runAction(action, skillId) {
+async function runAction(action, item) {
   const logEl = document.getElementById('install-log');
   const logText = document.getElementById('install-log-text');
   const installBtn = document.getElementById('install-confirm-btn');
@@ -153,10 +114,14 @@ async function runAction(action, skillId) {
   uninstallBtn.disabled = true;
 
   try {
-    const resp = await fetch(`/api/${action}`, {
+    const isMcp = item.type === 'mcp';
+    const endpoint = isMcp ? '/api/mcp-install' : `/api/${action}`;
+    const body = isMcp ? { mcp_id: item.id } : { skill_id: item.id };
+
+    const resp = await fetch(endpoint, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ skill_id: skillId }),
+      body: JSON.stringify(body),
     });
     const data = await resp.json();
     logText.className = 'install-log-text ' + (data.success ? 'log-success' : 'log-error');
@@ -179,9 +144,7 @@ function createCard(item) {
   const badgeClass = item.type === 'mcp' ? 'badge-mcp' : 'badge-skill';
   const badgeText = item.type === 'mcp' ? 'MCP Server' : 'Skill';
   const iconClass = item.type === 'mcp' ? 'card-icon mcp' : 'card-icon';
-  const installBtn = item.type === 'skill'
-    ? `<button class="install-btn" data-id="${item.id}">安装</button>`
-    : '';
+  const installBtn = `<button class="install-btn" data-id="${item.id}">安装</button>`;
 
   card.innerHTML = `
     <div class="card-header">
@@ -269,6 +232,11 @@ function openModal(item) {
 function openInstallModal(item) {
   currentInstallItem = item;
   document.getElementById('install-modal-title').textContent = `安装 ${item.name}`;
+  document.getElementById('install-modal-desc').textContent =
+    item.type === 'mcp'
+      ? '将运行 setup 脚本，把 MCP Server 注册到 Claude Code（user scope）。'
+      : 'skill 将安装到当前项目的 .claude/skills/ 目录下。';
+  document.getElementById('uninstall-confirm-btn').style.display = item.type === 'mcp' ? 'none' : '';
   document.getElementById('install-log').style.display = 'none';
   document.getElementById('install-modal-overlay').classList.add('open');
 }
@@ -295,11 +263,11 @@ document.getElementById('install-modal-overlay').addEventListener('click', (e) =
 });
 
 document.getElementById('install-confirm-btn').addEventListener('click', () => {
-  if (currentInstallItem) runAction('install', currentInstallItem.id);
+  if (currentInstallItem) runAction('install', currentInstallItem);
 });
 
 document.getElementById('uninstall-confirm-btn').addEventListener('click', () => {
-  if (currentInstallItem) runAction('uninstall', currentInstallItem.id);
+  if (currentInstallItem) runAction('uninstall', currentInstallItem);
 });
 
 document.addEventListener('keydown', (e) => {
