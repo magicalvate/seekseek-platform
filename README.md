@@ -15,7 +15,8 @@ AI platform monorepo — MCP servers, skills, and shared tooling.
 ```bash
 git clone https://github.com/magicalvate/seekseek-platform.git
 cd seekseek-platform
-python3 web/server.py
+python web/server.py   # Windows
+python3 web/server.py  # macOS / Linux
 ```
 
 然后打开浏览器访问 http://localhost:7842
