@@ -22,7 +22,8 @@ for skill_dir in "$SKILLS_DIR"/*/; do
     if [ -n "$FILTER" ] && [ "$name" != "$FILTER" ]; then
         continue
     fi
-    ln -sfn "$skill_dir" "$TARGET_DIR/$name"
+    rm -rf "$TARGET_DIR/$name"
+    cp -r "$skill_dir" "$TARGET_DIR/$name"
     echo "✓ $name"
     installed=$((installed + 1))
 done
