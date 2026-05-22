@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SeekSeek Platform</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="layout">
+    <nav class="sidebar">
+      <div class="logo">SeekSeek</div>
+      <ul class="nav-list">
+        <li class="nav-item active">插件商店</li>
+      </ul>
+    </nav>
+
+    <main class="main">
+      <div class="page-header">
+        <h1>插件商店</h1>
+        <p>扩展 SeekSeek 的能力，查看和管理 MCP 服务与 Skills。</p>
+      </div>
+
+      <section class="section">
+        <h2 class="section-title">MCP Servers</h2>
+        <div class="grid" id="mcp-grid"></div>
+      </section>
+
+      <section class="section">
+        <h2 class="section-title">Skills</h2>
+        <div class="grid" id="skills-grid"></div>
+      </section>
+    </main>
+  </div>
+
+  <!-- Info modal -->
+  <div class="modal-overlay" id="modal-overlay">
+    <div class="modal" id="modal">
+      <button class="modal-close" id="modal-close">✕</button>
+      <div id="modal-content"></div>
+    </div>
+  </div>
+
+  <!-- Install modal -->
+  <div class="modal-overlay" id="install-modal-overlay">
+    <div class="modal install-modal" id="install-modal">
+      <button class="modal-close" id="install-modal-close">✕</button>
+      <h2 class="install-modal-title" id="install-modal-title">安装 Skill</h2>
+      <p class="install-modal-desc">输入目标项目路径，skill 将安装到该项目的 <code>.claude/skills/</code> 目录下。</p>
+
+      <label class="path-label">项目路径</label>
+      <input
+        class="path-input"
+        id="install-path-input"
+        type="text"
+        placeholder="/Users/you/your-project"
+        spellcheck="false"
+      />
+
+      <div class="action-row" id="install-action-row" style="display:none">
+        <button class="confirm-btn" id="install-confirm-btn">确认安装</button>
+        <button class="uninstall-btn" id="uninstall-confirm-btn">卸载</button>
+      </div>
+      <div class="install-log" id="install-log" style="display:none">
+        <pre class="install-log-text" id="install-log-text"></pre>
+      </div>
+    </div>
+  </div>
+
+  <script src="main.js"></script>
+</body>
+</html>
