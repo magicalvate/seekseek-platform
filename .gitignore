@@ -6,3 +6,4 @@ ec_bridge.config.json
 result/
 .DS_Store
 reference/
+.claude/skills/
