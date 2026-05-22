@@ -1,0 +1,201 @@
+{
+  "main": {
+    "id": "7a569ee9d3c978de",
+    "type": "split",
+    "children": [
+      {
+        "id": "0a4890842e209816",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "41347b0dd186198b",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "packages/mcp-servers/ec-bridge/README.md",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "README"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "vertical"
+  },
+  "left": {
+    "id": "1e19352c39ced8e6",
+    "type": "split",
+    "children": [
+      {
+        "id": "5729bacd1466f334",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "0b572b5dfebbf198",
+            "type": "leaf",
+            "state": {
+              "type": "file-explorer",
+              "state": {
+                "sortOrder": "alphabetical",
+                "autoReveal": false
+              },
+              "icon": "lucide-folder-closed",
+              "title": "文件列表"
+            }
+          },
+          {
+            "id": "5595e55518851128",
+            "type": "leaf",
+            "state": {
+              "type": "search",
+              "state": {
+                "query": "",
+                "matchingCase": false,
+                "explainSearch": false,
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical"
+              },
+              "icon": "lucide-search",
+              "title": "搜索"
+            }
+          },
+          {
+            "id": "aadbc69fcb77e17f",
+            "type": "leaf",
+            "state": {
+              "type": "bookmarks",
+              "state": {},
+              "icon": "lucide-bookmark",
+              "title": "书签"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300
+  },
+  "right": {
+    "id": "f94c6bbba1ca7098",
+    "type": "split",
+    "children": [
+      {
+        "id": "5c393525cc925247",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "5348fc050935fd90",
+            "type": "leaf",
+            "state": {
+              "type": "backlink",
+              "state": {
+                "file": "packages/mcp-servers/ec-bridge/README.md",
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical",
+                "showSearch": false,
+                "searchQuery": "",
+                "backlinkCollapsed": false,
+                "unlinkedCollapsed": true
+              },
+              "icon": "links-coming-in",
+              "title": "README 的反向链接列表"
+            }
+          },
+          {
+            "id": "847318447ada7669",
+            "type": "leaf",
+            "state": {
+              "type": "outgoing-link",
+              "state": {
+                "file": "packages/mcp-servers/ec-bridge/README.md",
+                "linksCollapsed": false,
+                "unlinkedCollapsed": true
+              },
+              "icon": "links-going-out",
+              "title": "README 的出链列表"
+            }
+          },
+          {
+            "id": "712b47ea124aeb1a",
+            "type": "leaf",
+            "state": {
+              "type": "tag",
+              "state": {
+                "sortOrder": "frequency",
+                "useHierarchy": true,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-tags",
+              "title": "标签"
+            }
+          },
+          {
+            "id": "b65cb877ecf6fe86",
+            "type": "leaf",
+            "state": {
+              "type": "all-properties",
+              "state": {
+                "sortOrder": "frequency",
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-archive",
+              "title": "添加笔记属性"
+            }
+          },
+          {
+            "id": "68670da094916bac",
+            "type": "leaf",
+            "state": {
+              "type": "outline",
+              "state": {
+                "file": "packages/mcp-servers/ec-bridge/README.md",
+                "followCursor": false,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-list",
+              "title": "README 的大纲"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300,
+    "collapsed": true
+  },
+  "left-ribbon": {
+    "hiddenItems": {
+      "switcher:打开快速切换": false,
+      "graph:查看关系图谱": false,
+      "canvas:新建白板": false,
+      "daily-notes:打开/创建今天的日记": false,
+      "templates:插入模板": false,
+      "command-palette:打开命令面板": false,
+      "bases:新建数据库": false
+    }
+  },
+  "active": "41347b0dd186198b",
+  "lastOpenFiles": [
+    "packages/mcp-servers/ec-bridge/__pycache__/mock_data.cpython-314.pyc.126648930365728",
+    "packages/mcp-servers/ec-bridge/__pycache__/cloud_client.cpython-314.pyc.126648930382384",
+    "packages/mcp-servers/ec-bridge/server.py.tmp.11638.d000bd1814bc",
+    "packages/mcp-servers/ec-bridge/server.py.tmp.11638.769d74f522cc",
+    "packages/mcp-servers/ec-bridge/cloud_client.py.tmp.11638.1b6a7240ce0f",
+    "packages/mcp-servers/ec-bridge/cloud_client.py.tmp.11638.03447ece9e74",
+    "packages/mcp-servers/ec-bridge/mock_data.py.tmp.11638.b4c1fd70050f",
+    "packages/mcp-servers/ec-bridge/README.md.tmp.10333.597e5770be1b",
+    "packages/mcp-servers/ec-bridge/server.py.tmp.10333.30d1101ad4fd",
+    "packages/mcp-servers/ec-bridge/server.py.tmp.10333.91cf8e01187a",
+    "packages/mcp-servers/ec-bridge/server.py.tmp.10333.288347b2b4f4",
+    "README.md"
+  ]
+}
