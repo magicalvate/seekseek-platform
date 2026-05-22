@@ -16,15 +16,14 @@ async def search(query: str, top_k: int = 5) -> dict:
         return resp.json()
 
 
-async def fetch_transcripts(query: str, top_k: int = 5) -> dict:
+async def fetch_transcripts(query: str, top_k: int = 5) -> list:
     if USE_MOCK:
         return MOCK_FETCH_TRANSCRIPTS_RESPONSE
 
     async with httpx.AsyncClient(timeout=120, follow_redirects=True) as client:
         resp = await client.post(
-            f"{CLOUD_API_BASE}/fetch-transcripts",
+            f"{CLOUD_API_BASE}/fetch_transcripts",
             json={"question": query, "top_k": top_k},
-            headers={"Authorization": f"Bearer {CLOUD_API_KEY}"},
         )
         resp.raise_for_status()
         return resp.json()
@@ -37,7 +36,6 @@ async def get_download_url(meeting_id: int) -> dict:
     async with httpx.AsyncClient(timeout=30, follow_redirects=True) as client:
         resp = await client.get(
             f"{CLOUD_API_BASE}/v1/recordings/{meeting_id}/download-url",
-            headers={"Authorization": f"Bearer {CLOUD_API_KEY}"},
         )
         resp.raise_for_status()
         return resp.json()

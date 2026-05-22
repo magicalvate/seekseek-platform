@@ -25,8 +25,14 @@ def _save_local_config(data: dict) -> None:
         json.dump(existing, f, ensure_ascii=False, indent=2)
 
 
+_PROJECT_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..", ".."))
+_DEFAULT_SAVE_DIR = os.path.join(_PROJECT_ROOT, "cloud_data_base")
+
+
 def get_save_dir() -> str:
-    return _load_local_config().get("save_dir", "")
+    path = _load_local_config().get("save_dir", _DEFAULT_SAVE_DIR)
+    os.makedirs(path, exist_ok=True)
+    return path
 
 
 def set_save_dir(path: str) -> None:

@@ -3,7 +3,7 @@ import os
 import re
 from datetime import datetime
 from mcp.server.fastmcp import FastMCP
-from cloud_client import search, get_download_url, fetch_transcripts
+from cloud_client import search, get_download_url, fetch_transcripts as cloud_fetch_transcripts
 from config import get_save_dir, set_save_dir
 
 mcp = FastMCP("ec-bridge")
@@ -73,7 +73,7 @@ async def get_recording_download_url(meeting_id: int) -> str:
 
 
 @mcp.tool()
-async def fetch_meeting_content(query: str) -> str:
+async def fetch_transcripts(query: str) -> str:
     """
     Fetch full transcripts for meetings matching the query, then save each as a
     .txt file to the configured save directory.
@@ -91,30 +91,27 @@ async def fetch_meeting_content(query: str) -> str:
     [Return value]
     JSON with two fields:
     - transcripts: {meeting_name: full_transcript_text, ...}
-    - saved_files: list of absolute paths written, or null if no save directory is set
-    If no save directory is configured, remind the user to call set_save_directory first.
+    - saved_files: list of absolute paths written
     """
-    result = await fetch_transcripts(query=query)
-    transcripts: dict = result.get("transcripts", {})
+    result = await cloud_fetch_transcripts(query=query)
+    meetings: list = result if isinstance(result, list) else result.get("transcripts", [])
 
     save_dir = get_save_dir()
     saved_files = []
-    if save_dir:
-        for meeting_name, transcript in transcripts.items():
-            safe_name = re.sub(r'[^\w一-鿿\-]', '_', meeting_name)
-            filepath = os.path.join(save_dir, f"{safe_name}.txt")
-            with open(filepath, "w", encoding="utf-8") as f:
-                f.write(transcript)
-            saved_files.append(filepath)
+    for meeting in meetings:
+        meeting_title = meeting.get("meeting_title", "untitled")
+        fulltext = meeting.get("fulltext", "")
+        safe_name = re.sub(r'[^\w一-鿿\-]', '_', meeting_title)
+        filepath = os.path.join(save_dir, f"{safe_name}.txt")
+        with open(filepath, "w", encoding="utf-8") as f:
+            f.write(fulltext)
+        saved_files.append(filepath)
 
-    response = {
-        "transcripts": transcripts,
-        "saved_files": saved_files or None,
-    }
-    if not save_dir:
-        response["warning"] = "No save directory configured. Call set_save_directory first to enable auto-save."
-
-    return json.dumps(response, ensure_ascii=False, indent=2)
+    return json.dumps(
+        {"meetings": meetings, "saved_files": saved_files},
+        ensure_ascii=False,
+        indent=2,
+    )
 
 
 @mcp.tool()

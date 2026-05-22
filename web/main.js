@@ -9,7 +9,7 @@ const mcpServers = [
     tags: ['ec-bridge'],
     tools: [
       'search_recordings',
-      'fetch_meeting_content',
+      'fetch_transcripts',
       'get_recording_download_url',
       'set_save_directory',
       'save_search_result',
@@ -32,7 +32,7 @@ const skills = [
     description: '对指定会议或时间段内的会议进行深度分析，提取关键决策、行动项和讨论要点。',
     author: 'seekseek',
     tags: ['meeting-insights'],
-    tools: ['search_recordings', 'fetch_meeting_content'],
+    tools: ['search_recordings', 'fetch_transcripts'],
     examples: [
       '帮我总结上周所有关于产品规划的会议',
       '这次会议里有哪些重要决策？',
@@ -47,7 +47,7 @@ const skills = [
     description: '从会议逐字稿中自动识别时间节点、任务分配和截止日期，生成结构化的日程提醒列表。',
     author: 'seekseek',
     tags: ['smart-schedule'],
-    tools: ['fetch_meeting_content'],
+    tools: ['fetch_transcripts'],
     examples: [
       '从今天的会议里提取所有需要跟进的任务',
       '帮我整理本周会议里提到的 deadline',
@@ -77,7 +77,7 @@ const skills = [
     description: '从历史会议记录中提取项目进展、个人贡献和团队成果，辅助生成绩效总结材料。',
     author: 'seekseek',
     tags: ['performance-summary'],
-    tools: ['search_recordings', 'fetch_meeting_content'],
+    tools: ['search_recordings', 'fetch_transcripts'],
     examples: [
       '帮我从最近三个月的会议里整理我的工作亮点',
       '总结 Q2 期间 XX 项目的推进情况',
