@@ -3,8 +3,8 @@ import os
 import re
 from datetime import datetime
 from mcp.server.fastmcp import FastMCP
-from cloud_client import search, get_download_url, fetch_transcripts as cloud_fetch_transcripts
-from config import get_save_dir, set_save_dir
+from cloud_client import search, fetch_transcripts as cloud_fetch_transcripts
+from config import get_save_dir
 
 mcp = FastMCP("ec-bridge")
 
@@ -13,85 +13,53 @@ mcp = FastMCP("ec-bridge")
 async def search_recordings(query: str) -> str:
     """
     Search the meeting records database using natural language and return
-    matching meetings with relevant transcript excerpts.
+    matching meetings with relevant transcript excerpts. No files are written.
 
     [When to call]
-    Call this tool — NOT a calendar tool — whenever the user wants to look up
-    past meetings from internal records, transcripts, or recordings. Specifically:
-    - Ask which meetings a specific person attended or participated in
-    - Ask what was discussed, decided, or said in a past meeting
-    - Search meeting records / transcripts / minutes by topic, person, or date
-    - Ask about action items, decisions, or attendees from a specific past meeting
-    - Any question whose answer requires looking up recorded meeting content
+    Use for browsing, Q&A, and previewing past meetings — when the user wants
+    to find out what happened, who attended, or what was decided. Specifically:
+    - "哪些会议讨论了 XX？"
+    - "上周 Alice 参加了哪些会议？"
+    - "XX 会议里做了哪些决定？"
 
-    KEY: questions about who attended which meetings, or what happened in a past meeting,
-    refer to internal meeting recordings — always call this tool, not a calendar.
+    Do NOT call this when the user explicitly wants to save or download meeting
+    content locally — use fetch_transcripts instead.
 
     [When NOT to call]
-    Do NOT call for scheduling, calendar events, or future meetings — use a calendar
-    tool (e.g. Google Calendar) for those. This tool only covers past recorded meetings
-    stored in the internal database (transcripts, minutes, decisions, attendees).
-    Do not call when the user is discussing topics unrelated to meeting records
-    (e.g. writing code, asking general technical questions).
+    - Scheduling or future meetings → use a calendar tool
+    - User wants to save full transcripts to disk → use fetch_transcripts
 
     [Query rules]
     Pass the user's original question directly as the query — do not paraphrase or translate.
-    Examples:
-      User: "Which meetings did Alice attend last week?" → query="Which meetings did Alice attend last week?"
-      User: "Find meetings about the budget"            → query="Find meetings about the budget"
-      User: "What happened on May 12?"                 → query="What happened on May 12?"
 
     [Return value]
     - answer.meetings: list of matching meetings (title, time, participants, category)
-    - chunks: relevant raw transcript excerpts (include meeting_id for follow-up retrieval)
+    - chunks: relevant transcript excerpts for answering the query
     """
     result = await search(query=query)
     return json.dumps(result, ensure_ascii=False, indent=2)
 
 
 @mcp.tool()
-async def get_recording_download_url(meeting_id: int) -> str:
-    """
-    Get a temporary download link for a meeting recording (pre-signed URL, valid 15 minutes).
-
-    [When to call]
-    Call when the user wants to download, listen to, or access the raw audio file
-    of a specific meeting. Typically called after search_recordings returns results
-    and the user selects a meeting_id.
-
-    [Where meeting_id comes from]
-    Use the meeting_id field from chunks[] returned by search_recordings.
-    Example: user says "download the recording for this meeting"
-             → take meeting_id from the previous search result → call this tool.
-
-    [Return value]
-    - download_url: a directly accessible HTTPS link, valid for 15 minutes
-    - expires_in: seconds until the link expires
-    """
-    result = await get_download_url(meeting_id=meeting_id)
-    return json.dumps(result, ensure_ascii=False, indent=2)
-
-
-@mcp.tool()
 async def fetch_transcripts(query: str) -> str:
     """
-    Fetch full transcripts for meetings matching the query, then save each as a
-    .txt file to the configured save directory.
+    Fetch full transcripts for meetings matching the query and save each as a
+    .txt file to the local save directory. Use this when the user wants to
+    persist meeting content to disk — not just browse or preview.
 
     [When to call]
-    Call when the user wants to retrieve and keep the original transcript text of
-    meetings — NOT just preview or search. Typical triggers:
-    - "帮我把 XX 会议的原始文本拉下来"
-    - "把跟 AI 录音笔相关的会议文本取下来"
-    - "下载 XXX 主题的会议记录全文"
+    - "帮我把 XX 会议的源文件 / 原始文本拉下来"
+    - "把跟 XX 相关的会议记录保存到本地"
+    - "下载 XXX 主题的会议全文"
+    - "帮我找一下关于 XX 的会议"
 
     [When NOT to call]
-    For browsing, searching, or previewing meetings use search_recordings instead.
+    For searching, Q&A, or previewing meeting content use search_recordings instead.
+    Only call this when the user explicitly wants local files.
 
     [Return value]
-    JSON with two fields:
-    - transcripts: {meeting_name: full_transcript_text, ...}
-    - saved_files: list of absolute paths written
+    - meetings: list of meeting metadata + full transcript text
+    - saved_files: list of absolute paths of the .txt files written
     """
     result = await cloud_fetch_transcripts(query=query)
     meetings: list = result if isinstance(result, list) else result.get("transcripts", [])
@@ -115,32 +83,13 @@ async def fetch_transcripts(query: str) -> str:
 
 
 @mcp.tool()
-async def set_save_directory(path: str) -> str:
-    """
-    Set the default local directory for saving search results, persisted to config file.
-
-    [When to call]
-    Call when the user explicitly provides a directory path for saving results.
-    Once set, this path becomes the default — subsequent saves will not ask again.
-
-    [Path rules]
-    Use the path exactly as the user provides it. Supports absolute paths and ~ expansion.
-    """
-    expanded = os.path.expanduser(path)
-    os.makedirs(expanded, exist_ok=True)
-    set_save_dir(expanded)
-    return f"Save directory set to: {expanded}"
-
-
-@mcp.tool()
 async def save_search_result(data: str, query: str, filename: str = "") -> str:
     """
     Save raw JSON search results to a local file.
 
     [When to call]
-    Call only when the user explicitly asks to save search results.
-    If no save directory is configured, return a prompt asking the user
-    to specify one via set_save_directory first.
+    Call only when the user explicitly asks to save search results as JSON.
+    For saving full transcript text use fetch_transcripts instead.
 
     [Parameters]
     - data: the JSON string to save (pass the return value of search_recordings directly)
