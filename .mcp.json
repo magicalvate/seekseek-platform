@@ -1,0 +1,15 @@
+{
+  "mcpServers": {
+    "ec-bridge": {
+      "type": "stdio",
+      "command": "python3",
+      "args": [
+        "/mnt/d/project/seekseek-platform/packages/mcp-servers/ec-bridge/server.py"
+      ],
+      "env": {
+        "CLOUD_API_BASE": "http://106.13.15.237:8199",
+        "CLOUD_API_KEY": ""
+      }
+    }
+  }
+}
