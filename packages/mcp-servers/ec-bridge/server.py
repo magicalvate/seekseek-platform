@@ -9,7 +9,6 @@ from config import get_save_dir
 mcp = FastMCP("ec-bridge")
 
 
-@mcp.tool()
 async def search_recordings(query: str) -> str:
     """
     Search the meeting records database using natural language and return
@@ -41,17 +40,16 @@ async def search_recordings(query: str) -> str:
 
 
 @mcp.tool()
-async def fetch_transcripts(query: str) -> str:
+async def fetch_transcripts() -> str:
     """
-    Fetch full transcripts for meetings matching the query and save each as a
+    Fetch full transcripts for all meetings and save each as a
     .txt file to the local save directory. Use this when the user wants to
     persist meeting content to disk — not just browse or preview.
 
     [When to call]
-    - "帮我把 XX 会议的源文件 / 原始文本拉下来"
-    - "把跟 XX 相关的会议记录保存到本地"
-    - "下载 XXX 主题的会议全文"
-    - "帮我找一下关于 XX 的会议"
+    - "帮我把会议的源文件 / 原始文本拉下来"
+    - "把会议记录保存到本地"
+    - "下载会议全文"
 
     [When NOT to call]
     For searching, Q&A, or previewing meeting content use search_recordings instead.
@@ -61,7 +59,7 @@ async def fetch_transcripts(query: str) -> str:
     - meetings: list of meeting metadata + full transcript text
     - saved_files: list of absolute paths of the .txt files written
     """
-    result = await cloud_fetch_transcripts(query=query)
+    result = await cloud_fetch_transcripts()
     meetings: list = result if isinstance(result, list) else result.get("transcripts", [])
 
     save_dir = get_save_dir()
