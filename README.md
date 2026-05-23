@@ -34,6 +34,14 @@ python3 web/server.py
 
 然后打开浏览器访问 http://localhost:7842
 
+![插件商店 - EC Bridge MCP Server](mcp.png)
+
+### 安装 EC Bridge（启动 Claude Code 前必须完成）
+
+> ⚠️ **重要：请在启动 Claude Code 之前，先在插件商店中安装 EC Bridge MCP Server，否则会议下载功能将无法使用。**
+
+在浏览器中打开 http://localhost:7842，进入**插件商店**，找到 **EC Bridge** 卡片，点击"安装"，等待安装完成后再启动 Claude Code。
+
 ### 更新
 
 在项目目录下执行：
