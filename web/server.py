@@ -35,7 +35,9 @@ class Handler(SimpleHTTPRequestHandler):
             mcp_dir = MCP_SERVERS_DIR / mcp_id
             req_file = mcp_dir / "requirements.txt"
             if req_file.exists():
-                cmd = [sys.executable, "-m", "pip", "install", "-q", "-r", str(req_file)]
+                marker = Path(sys.executable).parent.parent / "EXTERNALLY-MANAGED"
+                break_flag = ["--break-system-packages"] if marker.exists() else []
+                cmd = [sys.executable, "-m", "pip", "install", "-q", *break_flag, "-r", str(req_file)]
             else:
                 self._json(400, {"success": False, "output": f"未找到 {mcp_id} 的安装文件"})
                 return

@@ -28,8 +28,10 @@ if sys.version_info < (3, 10):
     sys.exit(1)
 
 if importlib.util.find_spec("mcp") is None:
+    marker = Path(sys.executable).parent.parent / "EXTERNALLY-MANAGED"
+    break_flag = ["--break-system-packages"] if marker.exists() else []
     subprocess.check_call(
-        [sys.executable, "-m", "pip", "install", "-r", str(DIR / "requirements.txt"), "-q"]
+        [sys.executable, "-m", "pip", "install", "-r", str(DIR / "requirements.txt"), "-q", *break_flag]
     )
 
 import runpy
