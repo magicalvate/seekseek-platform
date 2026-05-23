@@ -1,0 +1,14 @@
+{
+  "name": "annual-report",
+  "display_name": "年度述职自动生成",
+  "version": "1.0.0",
+  "description": "年度述职自动生成 - AI录音卡技能",
+  "category": "productivity",
+  "author": "Xiaomi AI Team",
+  "license": "MIT",
+  "triggers": {
+    "zh": ["年度述职自动生成"],
+    "en": ["annual report"]
+  },
+  "entry_point": "SKILL.md"
+}

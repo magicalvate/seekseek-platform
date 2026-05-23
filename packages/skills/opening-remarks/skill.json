@@ -1,0 +1,14 @@
+{
+  "name": "opening-remarks",
+  "display_name": "开场白建议",
+  "version": "1.0.0",
+  "description": "开场白建议 - AI录音卡技能",
+  "category": "productivity",
+  "author": "Xiaomi AI Team",
+  "license": "MIT",
+  "triggers": {
+    "zh": ["开场白建议"],
+    "en": ["opening remarks"]
+  },
+  "entry_point": "SKILL.md"
+}

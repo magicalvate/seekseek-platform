@@ -1,0 +1,14 @@
+{
+  "name": "personality-test-pro",
+  "display_name": "性格测试Pro",
+  "version": "1.0.0",
+  "description": "性格测试Pro - AI录音卡技能",
+  "category": "productivity",
+  "author": "Xiaomi AI Team",
+  "license": "MIT",
+  "triggers": {
+    "zh": ["性格测试Pro"],
+    "en": ["personality test pro"]
+  },
+  "entry_point": "SKILL.md"
+}

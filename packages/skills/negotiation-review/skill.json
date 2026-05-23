@@ -1,0 +1,14 @@
+{
+  "name": "negotiation-review",
+  "display_name": "谈判复盘器",
+  "version": "1.0.0",
+  "description": "谈判复盘器 - AI录音卡技能",
+  "category": "productivity",
+  "author": "Xiaomi AI Team",
+  "license": "MIT",
+  "triggers": {
+    "zh": ["谈判复盘器"],
+    "en": ["negotiation review"]
+  },
+  "entry_point": "SKILL.md"
+}

@@ -1,0 +1,14 @@
+{
+  "name": "mindfulness-guide",
+  "display_name": "正念引导",
+  "version": "1.0.0",
+  "description": "正念引导 - AI录音卡技能",
+  "category": "productivity",
+  "author": "Xiaomi AI Team",
+  "license": "MIT",
+  "triggers": {
+    "zh": ["正念引导"],
+    "en": ["mindfulness guide"]
+  },
+  "entry_point": "SKILL.md"
+}

@@ -1,0 +1,14 @@
+{
+  "name": "emotional-palette",
+  "display_name": "情绪调色板",
+  "version": "1.0.0",
+  "description": "情绪调色板 - AI录音卡技能",
+  "category": "productivity",
+  "author": "Xiaomi AI Team",
+  "license": "MIT",
+  "triggers": {
+    "zh": ["情绪调色板"],
+    "en": ["emotional palette"]
+  },
+  "entry_point": "SKILL.md"
+}

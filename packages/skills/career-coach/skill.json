@@ -1,0 +1,14 @@
+{
+  "name": "career-coach",
+  "display_name": "职业教练",
+  "version": "1.0.0",
+  "description": "职业教练 - AI录音卡技能",
+  "category": "productivity",
+  "author": "Xiaomi AI Team",
+  "license": "MIT",
+  "triggers": {
+    "zh": ["职业教练"],
+    "en": ["career coach"]
+  },
+  "entry_point": "SKILL.md"
+}

@@ -1,0 +1,14 @@
+{
+  "name": "social-graph",
+  "display_name": "社交分析图谱",
+  "version": "1.0.0",
+  "description": "社交分析图谱 - AI录音卡技能",
+  "category": "productivity",
+  "author": "Xiaomi AI Team",
+  "license": "MIT",
+  "triggers": {
+    "zh": ["社交分析图谱"],
+    "en": ["social graph"]
+  },
+  "entry_point": "SKILL.md"
+}

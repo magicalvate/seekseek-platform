@@ -1,0 +1,14 @@
+{
+  "name": "letter-to-future",
+  "display_name": "给未来的信",
+  "version": "1.0.0",
+  "description": "给未来的信 - AI录音卡技能",
+  "category": "productivity",
+  "author": "Xiaomi AI Team",
+  "license": "MIT",
+  "triggers": {
+    "zh": ["给未来的信"],
+    "en": ["letter to future"]
+  },
+  "entry_point": "SKILL.md"
+}

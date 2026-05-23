@@ -1,0 +1,14 @@
+{
+  "name": "oral-comics",
+  "display_name": "口述漫画",
+  "version": "1.0.0",
+  "description": "口述漫画 - AI录音卡技能",
+  "category": "productivity",
+  "author": "Xiaomi AI Team",
+  "license": "MIT",
+  "triggers": {
+    "zh": ["口述漫画"],
+    "en": ["oral comics"]
+  },
+  "entry_point": "SKILL.md"
+}

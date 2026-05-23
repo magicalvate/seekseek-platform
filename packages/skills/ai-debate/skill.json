@@ -1,0 +1,14 @@
+{
+  "name": "ai-debate",
+  "display_name": "AI辩论赛",
+  "version": "1.0.0",
+  "description": "AI辩论赛 - AI录音卡技能",
+  "category": "productivity",
+  "author": "Xiaomi AI Team",
+  "license": "MIT",
+  "triggers": {
+    "zh": ["AI辩论赛"],
+    "en": ["ai debate"]
+  },
+  "entry_point": "SKILL.md"
+}

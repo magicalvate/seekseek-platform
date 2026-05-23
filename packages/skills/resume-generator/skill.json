@@ -1,0 +1,14 @@
+{
+  "name": "resume-generator",
+  "display_name": "简历生成",
+  "version": "1.0.0",
+  "description": "简历生成 - AI录音卡技能",
+  "category": "productivity",
+  "author": "Xiaomi AI Team",
+  "license": "MIT",
+  "triggers": {
+    "zh": ["简历生成"],
+    "en": ["resume generator"]
+  },
+  "entry_point": "SKILL.md"
+}
