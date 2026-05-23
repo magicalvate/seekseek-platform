@@ -4,19 +4,7 @@
 
 ## 安装（Claude Code）
 
-**Mac / Linux**
-```bash
-git clone https://github.com/magicalvate/seekseek-platform.git
-cd seekseek-platform/packages/mcp-servers/ec-bridge
-chmod +x setup.sh && ./setup.sh
-```
-
-**Windows（PowerShell）**
-```powershell
-git clone https://github.com/magicalvate/seekseek-platform.git
-cd seekseek-platform\packages\mcp-servers\ec-bridge
-.\setup.ps1
-```
+克隆仓库后，`.mcp.json` 已包含完整配置，直接重启 Claude Code 即可。首次启动时 `start.sh` 会自动安装所需 Python 依赖，之后启动跳过此步骤。
 
 重启 Claude Code 后即可提问，例如：
 
@@ -45,7 +33,7 @@ claude mcp remove ec-bridge --scope user
 
 适用于 Cursor、VS Code 或任意支持 MCP 的客户端，手动注册即可：
 
-**启动命令：** `python3 /path/to/ec-bridge/server.py`
+**启动命令：** `python3 /path/to/ec-bridge/start.py`
 
 **环境变量：**
 
@@ -62,7 +50,7 @@ claude mcp remove ec-bridge --scope user
   "mcpServers": {
     "ec-bridge": {
       "command": "python3",
-      "args": ["/path/to/ec-bridge/server.py"],
+      "args": ["/path/to/ec-bridge/start.py"],
       "env": {
         "CLOUD_API_BASE": "http://106.13.15.237:8199",
         "CLOUD_API_KEY": ""
@@ -82,7 +70,7 @@ claude mcp remove ec-bridge --scope user
     "ec-bridge": {
       "type": "stdio",
       "command": "python3",
-      "args": ["/path/to/ec-bridge/server.py"],
+      "args": ["/path/to/ec-bridge/start.py"],
       "env": {
         "CLOUD_API_BASE": "http://106.13.15.237:8199",
         "CLOUD_API_KEY": ""
@@ -97,10 +85,9 @@ claude mcp remove ec-bridge --scope user
 
 | 工具 | 说明 |
 |------|------|
-| `search_recordings` | 自然语言搜索会议记录 |
-| `get_recording_download_url` | 获取会议录音的临时下载链接 |
-| `set_save_directory` | 设置搜索结果的本地保存目录 |
-| `save_search_result` | 将原始 JSON 结果保存到本地文件 |
+| `search_recordings` | 自然语言搜索会议记录，返回匹配会议及相关摘要 |
+| `fetch_transcripts` | 拉取匹配会议的完整转写文本并保存为本地 .txt 文件 |
+| `save_search_result` | 将原始 JSON 搜索结果保存到本地文件 |
 
 ## 云端 API 规范
 

@@ -1,6 +1,6 @@
 import httpx
 from config import CLOUD_API_BASE, CLOUD_API_KEY, USE_MOCK
-from mock_data import MOCK_SEARCH_RESPONSE, MOCK_DOWNLOAD_URL_RESPONSE, MOCK_FETCH_TRANSCRIPTS_RESPONSE
+from mock_data import MOCK_SEARCH_RESPONSE, MOCK_FETCH_TRANSCRIPTS_RESPONSE
 
 
 async def search(query: str, top_k: int = 5) -> dict:
@@ -29,13 +29,3 @@ async def fetch_transcripts(query: str, top_k: int = 5) -> list:
         return resp.json()
 
 
-async def get_download_url(meeting_id: int) -> dict:
-    if USE_MOCK:
-        return MOCK_DOWNLOAD_URL_RESPONSE
-
-    async with httpx.AsyncClient(timeout=30, follow_redirects=True) as client:
-        resp = await client.get(
-            f"{CLOUD_API_BASE}/v1/recordings/{meeting_id}/download-url",
-        )
-        resp.raise_for_status()
-        return resp.json()

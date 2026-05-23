@@ -4,7 +4,7 @@
       "type": "stdio",
       "command": "python3",
       "args": [
-        "/mnt/d/project/seekseek-platform/packages/mcp-servers/ec-bridge/server.py"
+        "/Users/meng/PyCharmMiscProject/seekseek-platform/packages/mcp-servers/ec-bridge/start.py"
       ],
       "env": {
         "CLOUD_API_BASE": "http://106.13.15.237:8199",

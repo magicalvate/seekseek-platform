@@ -39,12 +39,6 @@ MOCK_SEARCH_RESPONSE = {
     ]
 }
 
-MOCK_DOWNLOAD_URL_RESPONSE = {
-    "meeting_id": 6,
-    "download_url": "https://your-bucket.cos.ap-guangzhou.myqcloud.com/recordings/rec_006.wav?X-Amz-Expires=900&X-Amz-Signature=mock",
-    "expires_in": 900
-}
-
 MOCK_FETCH_TRANSCRIPTS_RESPONSE = [
     {
         "id": 1,
