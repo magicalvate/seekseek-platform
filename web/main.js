@@ -100,6 +100,21 @@ const skills = [
     ],
   },
   {
+    id: 'elevenlabs',
+    type: 'skill',
+    icon: '🎙️',
+    name: 'ElevenLabs 语音合成',
+    description: '基于 ElevenLabs 的语音生成工具，支持文本转语音、声音克隆、批量转换和音效生成，无需额外依赖，开箱即用。',
+    author: 'kortix-ai',
+    tags: ['elevenlabs'],
+    tools: [],
+    examples: [
+      '帮我把这段文字转成语音',
+      '生成一段音频："今天天气不错"',
+      '克隆我的声音并朗读这段内容',
+    ],
+  },
+  {
     id: 'skill-creator',
     type: 'skill',
     icon: '🛠️',

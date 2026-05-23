@@ -66,17 +66,21 @@ async def fetch_transcripts(query: str) -> str:
 
     save_dir = get_save_dir()
     saved_files = []
+    skipped_files = []
     for meeting in meetings:
         meeting_title = meeting.get("meeting_title", "untitled")
         fulltext = meeting.get("fulltext", "")
         safe_name = re.sub(r'[^\w一-鿿\-]', '_', meeting_title)
         filepath = os.path.join(save_dir, f"{safe_name}.txt")
+        if os.path.exists(filepath):
+            skipped_files.append(filepath)
+            continue
         with open(filepath, "w", encoding="utf-8") as f:
             f.write(fulltext)
         saved_files.append(filepath)
 
     return json.dumps(
-        {"meetings": meetings, "saved_files": saved_files},
+        {"meetings": meetings, "saved_files": saved_files, "skipped_files": skipped_files},
         ensure_ascii=False,
         indent=2,
     )
