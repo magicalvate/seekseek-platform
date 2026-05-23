@@ -347,22 +347,18 @@ async function runAction(action, item) {
   const installBtn = document.getElementById('install-confirm-btn');
   const uninstallBtn = document.getElementById('uninstall-confirm-btn');
 
+  const isMcp = item.type === 'mcp';
+  const actionLabel = action === 'uninstall' ? '正在卸载' : '正在安装';
+
   logEl.style.display = 'block';
   logText.className = 'install-log-text log-running';
-  logText.textContent = '';
+  logText.textContent = `${actionLabel} ${item.name}…`;
   installBtn.disabled = true;
   uninstallBtn.disabled = true;
 
-  const isMcp = item.type === 'mcp';
   const endpoint = isMcp ? '/api/mcp-install' : `/api/${action}`;
   const body = isMcp ? { mcp_id: item.id } : { skill_id: item.id };
-  const lines = [];
-
-  function appendLine(text) {
-    lines.push(text);
-    logText.textContent = lines.join('\n');
-    logEl.scrollTop = logEl.scrollHeight;
-  }
+  const errorLines = [];
 
   try {
     const resp = await fetch(endpoint, {
@@ -383,13 +379,15 @@ async function runAction(action, item) {
       buf = parts.pop();
       for (const line of parts) {
         if (line === '__OK__') { success = true; }
-        else if (line.startsWith('__FAIL__')) { success = false; appendLine(line.replace('__FAIL__: ', '')); }
-        else if (line) { appendLine(line); }
+        else if (line.startsWith('__FAIL__')) { success = false; errorLines.push(line.replace('__FAIL__: ', '')); }
+        else if (line && !success) { errorLines.push(line); }
       }
     }
 
     logText.className = 'install-log-text ' + (success ? 'log-success' : 'log-error');
-    if (!lines.length) appendLine(success ? '完成' : '执行失败');
+    logText.textContent = success
+      ? (action === 'uninstall' ? `已卸载 ${item.name}` : `${item.name} 安装成功`)
+      : (errorLines.join('\n') || '执行失败');
   } catch {
     logText.className = 'install-log-text log-error';
     logText.textContent = '无法连接本地服务，请先运行：python web/server.py';
