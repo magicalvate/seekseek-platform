@@ -7,4 +7,5 @@ result/
 .DS_Store
 reference/
 .claude/skills/
+voice_tts/
 
