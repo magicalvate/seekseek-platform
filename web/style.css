@@ -463,6 +463,8 @@ body {
   background: #1a1a2e;
   border-radius: 8px;
   padding: 14px;
+  max-height: 240px;
+  overflow-y: auto;
 }
 
 .install-log-text {
@@ -472,6 +474,16 @@ body {
   white-space: pre-wrap;
   line-height: 1.6;
   margin: 0;
+}
+
+.install-log-text.log-running::after {
+  content: '▌';
+  animation: blink 1s step-end infinite;
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
 }
 
 .log-success {

@@ -3,6 +3,7 @@ import json
 import os
 import platform
 import subprocess
+import sys
 from http.server import HTTPServer, SimpleHTTPRequestHandler
 from pathlib import Path
 
@@ -32,11 +33,12 @@ class Handler(SimpleHTTPRequestHandler):
                 self._json(400, {"success": False, "output": "缺少 mcp_id"})
                 return
             mcp_dir = MCP_SERVERS_DIR / mcp_id
-            if IS_WINDOWS:
-                script = str(mcp_dir / "setup.ps1").replace("/", "\\")
-                cmd = ["PowerShell", "-File", script]
+            req_file = mcp_dir / "requirements.txt"
+            if req_file.exists():
+                cmd = [sys.executable, "-m", "pip", "install", "-r", str(req_file)]
             else:
-                cmd = ["bash", str(mcp_dir / "setup.sh")]
+                self._json(400, {"success": False, "output": f"未找到 {mcp_id} 的安装文件"})
+                return
         else:
             skill_id = body.get("skill_id", "").strip()
             if not skill_id:
@@ -57,13 +59,28 @@ class Handler(SimpleHTTPRequestHandler):
                 else:
                     cmd = ["rm", "-rf", target]
 
+        self._stream_cmd(cmd)
+
+    def _stream_cmd(self, cmd):
+        self.send_response(200)
+        self.send_header("Content-Type", "text/plain; charset=utf-8")
+        self.send_header("Cache-Control", "no-cache")
+        self.end_headers()
         try:
-            result = subprocess.run(cmd, capture_output=True, text=True, timeout=60, cwd=str(REPO_ROOT))
-            success = result.returncode == 0
-            output = (result.stdout + result.stderr).strip()
-            self._json(200, {"success": success, "output": output or ("完成" if success else "执行失败")})
+            proc = subprocess.Popen(
+                cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT,
+                text=True, cwd=str(REPO_ROOT)
+            )
+            for line in proc.stdout:
+                self.wfile.write(line.encode())
+                self.wfile.flush()
+            proc.wait()
+            sentinel = b"__OK__\n" if proc.returncode == 0 else b"__FAIL__\n"
+            self.wfile.write(sentinel)
+            self.wfile.flush()
         except Exception as e:
-            self._json(200, {"success": False, "output": str(e)})
+            self.wfile.write(f"__FAIL__: {e}\n".encode())
+            self.wfile.flush()
 
     def _json(self, status, data):
         body = json.dumps(data, ensure_ascii=False).encode()
@@ -82,19 +99,30 @@ if __name__ == "__main__":
     import time
     import sys
 
-    try:
-        # Free the port if something is already listening on it
+    def free_port(port):
         with _socket.socket(_socket.AF_INET, _socket.SOCK_STREAM) as s:
-            if s.connect_ex(("127.0.0.1", PORT)) == 0:
-                if IS_WINDOWS:
-                    subprocess.run(
-                        ["PowerShell", "-Command",
-                         f'Stop-Process -Force -Id (Get-NetTCPConnection -LocalPort {PORT}).OwningProcess'],
-                        capture_output=True,
-                    )
-                else:
-                    subprocess.run(["fuser", "-k", f"{PORT}/tcp"], capture_output=True)
-                time.sleep(0.5)
+            if s.connect_ex(("127.0.0.1", port)) != 0:
+                return
+        print(f"端口 {port} 被占用，正在强制释放...")
+        if IS_WINDOWS:
+            subprocess.run(
+                ["PowerShell", "-Command",
+                 f'Stop-Process -Force -Id (Get-NetTCPConnection -LocalPort {port}).OwningProcess'],
+                capture_output=True,
+            )
+        elif platform.system() == "Darwin":
+            r = subprocess.run(["lsof", "-ti", f":{port}"], capture_output=True, text=True)
+            for pid in r.stdout.split():
+                try:
+                    os.kill(int(pid), 9)
+                except (ProcessLookupError, ValueError):
+                    pass
+        else:
+            subprocess.run(["fuser", "-k", f"{port}/tcp"], capture_output=True)
+        time.sleep(0.5)
+
+    try:
+        free_port(PORT)
 
         HTTPServer.allow_reuse_address = True
         server = HTTPServer(("127.0.0.1", PORT), Handler)

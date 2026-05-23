@@ -348,24 +348,48 @@ async function runAction(action, item) {
   const uninstallBtn = document.getElementById('uninstall-confirm-btn');
 
   logEl.style.display = 'block';
-  logText.className = 'install-log-text';
-  logText.textContent = action === 'install' ? '正在安装...' : '正在卸载...';
+  logText.className = 'install-log-text log-running';
+  logText.textContent = '';
   installBtn.disabled = true;
   uninstallBtn.disabled = true;
 
-  try {
-    const isMcp = item.type === 'mcp';
-    const endpoint = isMcp ? '/api/mcp-install' : `/api/${action}`;
-    const body = isMcp ? { mcp_id: item.id } : { skill_id: item.id };
+  const isMcp = item.type === 'mcp';
+  const endpoint = isMcp ? '/api/mcp-install' : `/api/${action}`;
+  const body = isMcp ? { mcp_id: item.id } : { skill_id: item.id };
+  const lines = [];
 
+  function appendLine(text) {
+    lines.push(text);
+    logText.textContent = lines.join('\n');
+    logEl.scrollTop = logEl.scrollHeight;
+  }
+
+  try {
     const resp = await fetch(endpoint, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(body),
     });
-    const data = await resp.json();
-    logText.className = 'install-log-text ' + (data.success ? 'log-success' : 'log-error');
-    logText.textContent = data.output;
+    const reader = resp.body.getReader();
+    const decoder = new TextDecoder();
+    let buf = '';
+    let success = false;
+
+    while (true) {
+      const { done, value } = await reader.read();
+      if (done) break;
+      buf += decoder.decode(value, { stream: true });
+      const parts = buf.split('\n');
+      buf = parts.pop();
+      for (const line of parts) {
+        if (line === '__OK__') { success = true; }
+        else if (line.startsWith('__FAIL__')) { success = false; appendLine(line.replace('__FAIL__: ', '')); }
+        else if (line) { appendLine(line); }
+      }
+    }
+
+    logText.className = 'install-log-text ' + (success ? 'log-success' : 'log-error');
+    if (!lines.length) appendLine(success ? '完成' : '执行失败');
   } catch {
     logText.className = 'install-log-text log-error';
     logText.textContent = '无法连接本地服务，请先运行：python web/server.py';
