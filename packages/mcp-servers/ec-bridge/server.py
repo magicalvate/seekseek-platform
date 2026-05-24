@@ -8,7 +8,7 @@ from config import get_save_dir
 
 mcp = FastMCP("ec-bridge")
 
-
+@mcp.tool()
 async def search_recordings(query: str) -> str:
     """
     Search the meeting records database using natural language and return
