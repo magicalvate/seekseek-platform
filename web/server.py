@@ -15,9 +15,70 @@ WEB_DIR = Path(__file__).resolve().parent
 IS_WINDOWS = platform.system() == "Windows"
 
 
+def _parse_frontmatter(text: str) -> dict:
+    """Parse YAML frontmatter from a SKILL.md file (stdlib only, no PyYAML needed)."""
+    import re
+    m = re.match(r'^---\s*\n(.*?)\n---', text, re.DOTALL)
+    if not m:
+        return {}
+    result: dict = {}
+    current_list_key = None
+    for line in m.group(1).splitlines():
+        if line.startswith('  - ') and current_list_key is not None:
+            result[current_list_key].append(line[4:].strip().strip('"\''))
+        elif ':' in line and not line.startswith(' '):
+            k, _, v = line.partition(':')
+            k, v = k.strip(), v.strip().strip('"\'')
+            if v == '':
+                result[k] = []
+                current_list_key = k
+            else:
+                result[k] = v
+                current_list_key = None
+        else:
+            current_list_key = None
+    return result
+
+
 class Handler(SimpleHTTPRequestHandler):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, directory=str(WEB_DIR), **kwargs)
+
+    def do_GET(self):
+        if self.path == '/api/skills':
+            self._serve_skills()
+            return
+        super().do_GET()
+
+    def _serve_skills(self):
+        skills = []
+        if SKILLS_DIR.exists():
+            for skill_dir in sorted(SKILLS_DIR.iterdir()):
+                if not skill_dir.is_dir():
+                    continue
+                skill_md = skill_dir / 'SKILL.md'
+                if not skill_md.exists():
+                    continue
+                try:
+                    meta = _parse_frontmatter(skill_md.read_text(encoding='utf-8'))
+                except Exception:
+                    meta = {}
+                sid = skill_dir.name
+                tags = meta.get('tags')
+                tools = meta.get('tools')
+                examples = meta.get('examples')
+                skills.append({
+                    'id': sid,
+                    'type': 'skill',
+                    'name': meta.get('name', sid),
+                    'description': meta.get('description', ''),
+                    'icon': meta.get('icon', '📦'),
+                    'author': meta.get('author', 'seekseek'),
+                    'tags': tags if isinstance(tags, list) else [sid],
+                    'tools': tools if isinstance(tools, list) else [],
+                    'examples': examples if isinstance(examples, list) else [],
+                })
+        self._json(200, skills)
 
     def do_POST(self):
         if self.path not in ("/api/install", "/api/uninstall", "/api/mcp-install"):

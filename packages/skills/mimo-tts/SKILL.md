@@ -1,6 +1,15 @@
 ---
-name: mimo-tts
+name: MiMo 语音合成
 description: "MiMo V2.5 text-to-speech — convert text to natural-sounding audio using Xiaomi's MiMo V2.5 TTS API. Use this skill whenever the agent needs to: generate spoken audio from text, narrate documents, produce voiceovers, create a custom voice from a text description (voice design), or clone a voice from an audio sample. Supports natural-language style control, three output formats (wav/mp3/pcm16), and three operating modes: preset voice, AI voice design, and voice cloning. Requires MIMO_API_KEY."
+icon: "🎙️"
+author: seekseek
+tags:
+  - mimo-tts
+tools: []
+examples:
+  - 帮我把这段文字转成语音
+  - 用冰糖的声音朗读这段内容
+  - 克隆这个声音并说一段话
 ---
 
 # MiMo V2.5 — Text-to-Speech

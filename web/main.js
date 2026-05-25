@@ -539,5 +539,31 @@ document.addEventListener('keydown', (e) => {
   }
 });
 
+// Skills registry: existing entries keep their rich metadata (icon, examples, etc.)
+// New skills not listed here are auto-discovered from the filesystem via /api/skills.
+const skillRegistry = Object.fromEntries(skills.map(s => [s.id, s]));
+
+async function loadSkills() {
+  try {
+    const resp = await fetch('/api/skills');
+    if (!resp.ok) throw new Error('api error');
+    const discovered = await resp.json();
+    const discoveredMap = Object.fromEntries(discovered.map(s => [s.id, s]));
+    const discoveredIds = new Set(discovered.map(s => s.id));
+
+    // Keep registry order for known skills (only if they still exist on disk)
+    const result = skills.filter(s => discoveredIds.has(s.id));
+    const registryIds = new Set(result.map(s => s.id));
+
+    // Append auto-discovered skills not in registry (new skills)
+    for (const s of discovered) {
+      if (!registryIds.has(s.id)) result.push(s);
+    }
+    return result;
+  } catch {
+    return skills; // fallback to hardcoded list if server not running
+  }
+}
+
 renderGrid(mcpServers, 'mcp-grid');
-renderGrid(skills, 'skills-grid');
+loadSkills().then(list => renderGrid(list, 'skills-grid'));
