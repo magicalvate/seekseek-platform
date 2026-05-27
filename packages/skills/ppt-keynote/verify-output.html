@@ -1,0 +1,191 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Hello Open Design</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: #111;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    .deck {
+      position: relative;
+      width: 1280px;
+      height: 720px;
+      overflow: hidden;
+    }
+
+    .slide {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 80px 100px;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.4s ease;
+    }
+
+    .slide.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    /* backgrounds */
+    .s1 { background: linear-gradient(135deg, #0f0f1a 0%, #1a1a2e 100%); }
+    .s2 { background: linear-gradient(135deg, #0d1117 0%, #1c1c2e 100%); }
+    .s3 { background: linear-gradient(135deg, #0a0a10 0%, #12121e 100%); }
+
+    /* typography */
+    .kicker {
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: #6b7280;
+      margin-bottom: 18px;
+    }
+
+    .title {
+      font-size: 80px;
+      font-weight: 600;
+      letter-spacing: -0.03em;
+      line-height: 1.05;
+      color: #f9fafb;
+      margin-bottom: 20px;
+    }
+
+    .subtitle {
+      font-size: 24px;
+      color: #6b7280;
+      line-height: 1.5;
+      max-width: 680px;
+    }
+
+    .accent { color: #a78bfa; }
+
+    /* counter */
+    #counter {
+      position: fixed;
+      top: 22px;
+      right: 30px;
+      font-size: 13px;
+      color: #374151;
+      letter-spacing: 0.08em;
+      font-variant-numeric: tabular-nums;
+      pointer-events: none;
+    }
+
+    /* nav dots */
+    #nav {
+      position: fixed;
+      bottom: 24px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      gap: 8px;
+    }
+
+    .dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: #374151;
+      border: none;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    .dot.active { background: #a78bfa; }
+
+    /* scale on small viewports */
+    @media (max-width: 1300px) {
+      body { align-items: flex-start; justify-content: flex-start; }
+      .deck {
+        transform-origin: top left;
+        transform: scale(calc(100vw / 1280));
+      }
+    }
+  </style>
+</head>
+<body>
+
+<div class="deck">
+
+  <!-- Slide 1 · Cover -->
+  <section class="slide s1 active">
+    <div class="kicker">技术验证 · 2026-05-26</div>
+    <h1 class="title">Hello<br><span class="accent">Open Design</span></h1>
+    <p class="subtitle">ppt-keynote skill 可用性验证 — 3 页测试 deck</p>
+  </section>
+
+  <!-- Slide 2 · Content -->
+  <section class="slide s2">
+    <div class="kicker">验证内容</div>
+    <h2 class="title" style="font-size:56px; margin-bottom:28px;">Skill 链路已通</h2>
+    <p class="subtitle">
+      SKILL.md 被 Claude Code 正确读取<br>
+      指令注入 → HTML 生成 → 键盘导航 → 单文件输出<br>
+      全流程无需外部 API
+    </p>
+  </section>
+
+  <!-- Slide 3 · CTA -->
+  <section class="slide s3">
+    <h2 class="title" style="font-size:96px; letter-spacing:-0.04em;">✓ 通过</h2>
+    <p class="subtitle">/ppt-keynote 开箱即用</p>
+  </section>
+
+</div>
+
+<div id="counter">1 / 3</div>
+
+<nav id="nav">
+  <button class="dot active" data-i="0"></button>
+  <button class="dot" data-i="1"></button>
+  <button class="dot" data-i="2"></button>
+</nav>
+
+<script>
+(function () {
+  var slides  = Array.from(document.querySelectorAll('.slide'));
+  var dots    = Array.from(document.querySelectorAll('.dot'));
+  var counter = document.getElementById('counter');
+  var n       = slides.length;
+  var cur     = 0;
+
+  function go(idx) {
+    slides[cur].classList.remove('active');
+    dots[cur].classList.remove('active');
+    cur = (idx + n) % n;
+    slides[cur].classList.add('active');
+    dots[cur].classList.add('active');
+    counter.textContent = (cur + 1) + ' / ' + n;
+    history.replaceState(null, '', '#/' + (cur + 1));
+  }
+
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); go(cur + 1); }
+    if (e.key === 'ArrowLeft')                    { e.preventDefault(); go(cur - 1); }
+  });
+
+  dots.forEach(function (d) {
+    d.addEventListener('click', function () { go(Number(d.dataset.i)); });
+  });
+
+  var m = location.hash.match(/\/(\d+)/);
+  if (m) go(Number(m[1]) - 1);
+})();
+</script>
+
+</body>
+</html>

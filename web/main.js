@@ -339,6 +339,21 @@ const skills = [
       '声纹克隆，用乔布斯的风格点评这个方案',
     ],
   },
+  {
+    id: 'ppt-keynote',
+    type: 'skill',
+    icon: '🎬',
+    name: 'Keynote 风格 PPT',
+    description: '用苹果 Keynote 风格生成单文件 HTML 幻灯片，一屏一卡、键盘左右切换，并自动同步导出 WPS/PowerPoint 可直接编辑的 PPTX 文件。',
+    author: 'seekseek',
+    tags: ['ppt-keynote'],
+    tools: [],
+    examples: [
+      '帮我做一份产品介绍 PPT，Keynote 风格',
+      '把这段内容做成 8 张幻灯片',
+      '生成演讲 PPT 并导出 PPTX',
+    ],
+  },
 ];
 
 async function runAction(action, item) {
